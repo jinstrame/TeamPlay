@@ -30,8 +30,6 @@ public class PostgreAgregator implements Agregator<Post>{
 
     private Post provideNextPost(){
         PostAggrQueue queue = sources.poll();
-        if (queue == null)
-            return null;
 
         Post post = queue.poll();
         if (queue.peek() != null)
@@ -44,14 +42,15 @@ public class PostgreAgregator implements Agregator<Post>{
     @Override
     public List<Post> getNext(int count) {
         LinkedList<Post> ret = new LinkedList<>();
-        for (int i = 0; i < count; i++)
-        {
+        for (int i = 0; i < count; i++){
             Post next = provideNextPost();
             if (next == null) break;
 
             ret.add(next);
         }
+        sources.forEach(PostAggrQueue::reset);
         readed+=ret.size();
+
         return ret;
     }
 
@@ -60,7 +59,6 @@ public class PostgreAgregator implements Agregator<Post>{
         int inSource = 0;
         for (PostAggrQueue queue : sources)
             inSource += queue.size();
-
         return inSource + outOfSourceSize;
     }
 

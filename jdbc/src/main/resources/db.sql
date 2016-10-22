@@ -6,11 +6,6 @@ CREATE SCHEMA web_app;
 DROP SCHEMA web_app CASCADE;
 CREATE SCHEMA web_app;
 
-GRANT USAGE ON SCHEMA web_app to tomcat;
-GRANT ALL ON ALL SEQUENCES IN SCHEMA web_app TO tomcat;
-GRANT ALL ON ALL TABLES IN SCHEMA web_app TO tomcat;
-GRANT CONNECT ON DATABASE postgres to tomcat;
-
 CREATE TABLE web_app.pages(
   id INT PRIMARY KEY ,
   type VARCHAR(10),
@@ -52,3 +47,8 @@ CREATE TABLE web_app.org_participants(
   organisation_id INT REFERENCES web_app.pages(id) ON DELETE CASCADE,
   participation_type VARCHAR(10)
 );
+
+GRANT USAGE ON SCHEMA web_app to tomcat;
+GRANT ALL ON ALL SEQUENCES IN SCHEMA web_app TO tomcat;
+GRANT ALL ON ALL TABLES IN SCHEMA web_app TO tomcat;
+GRANT CONNECT ON DATABASE postgres to tomcat;

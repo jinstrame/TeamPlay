@@ -11,17 +11,23 @@ import lombok.val;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.LinkedList;
 import java.util.Optional;
 
+
+/**
+ * Implementation of <code>AgreratorOueue</code> interface for <code>Post</code> objects.
+ * Implements AgregatorQueue, Comparable interfaces with generic parameter <code>Page</code>.
+ * Can be compared with other <code>PostAggrQueue</code> by comparing <code>time</code> fields
+ * of both queues head elements
+ */
 
 @Log4j2
 class PostAggrQueue implements AgregatorQueue<Post>, Comparable {
 
     // TODO: 22.10.2016 test queue
-    
     private int size;
-
     private ConnectionPool pool;
 
     private int pageId;
@@ -69,32 +75,37 @@ class PostAggrQueue implements AgregatorQueue<Post>, Comparable {
         return builder.build();
     }
 
-    private boolean canLoad(){
+    private boolean canLoad() {
         return (lastTried > 0);
     }
 
-
-
-    private void loadMore(){
-            boolean loaded = false;
-            while (canLoad() && !loaded){
-                loaded = loadCycle();
-            }
+    private void getFromDbIfEmpty(){
+        if (loadedSet == null || loadedSet.size() == 0)
+            get();
     }
 
-    private boolean loadCycle(){
+
+    private void get(){
+        boolean loaded = false;
         loadedSet = new LinkedList<>();
+        while (canLoad() && !loaded){
+            loaded = getCycle();
+        }
+    }
+
+    private boolean getCycle(){
         lastTried -= portionSize;
-        try(Connection con = pool.get()) {
-            ResultSet set = con.createStatement().executeQuery(
+        try(Connection con = pool.get();
+            Statement statement = con.createStatement()) {
+            ResultSet set = statement.executeQuery(
                     "SELECT post_id, prev_post_id, post_time, content from web_app.posts WHERE " +
                             "page_id = " + pageId + " AND " +
                             "(post_id < " + lastLoaded + " AND post_id >= " + lastTried + ") " +
                             "ORDER BY post_time DESC");
+
             while(set.next()) {
                 loadedSet.add(buildNext(set));
             }
-
             if (loadedSet.size() == 0) {
                 portionSize *= 2;
                 return false;
@@ -107,30 +118,32 @@ class PostAggrQueue implements AgregatorQueue<Post>, Comparable {
         return false;
     }
 
+    void reset(){
+        lastTried = lastLoaded;
+        loadedSet = null;
+    }
+
     @Override
     public Post poll() {
-        if (loadedSet.size() == 0)
-            loadMore();
-
-        if (loadedSet.peek() != null)
-            removed++;
-
+        getFromDbIfEmpty();
+        if (loadedSet.peek() != null) removed++;
         return loadedSet.poll();
     }
 
     @Override
     public Post peek() {
-        if (loadedSet.size() == 0)
-            loadMore();
+        getFromDbIfEmpty();
         return loadedSet.peek();
     }
 
 
     private void updateSize(){
-        try (Connection con = pool.get()) {
-            ResultSet set = con.prepareStatement(
-                    "SELECT COUNT(*) AS cnt FROM web_app.posts WHERE page_id = " + pageId)
-                    .getResultSet();
+        try (Connection con = pool.get();
+             Statement statement = con.createStatement()) {
+            ResultSet set = statement.executeQuery(
+                    "SELECT COUNT(*) AS cnt FROM web_app.posts WHERE page_id = " + pageId);
+
+            set.next();
             size = set.getInt("cnt");
         } catch (SQLException e) {
             e.printStackTrace();

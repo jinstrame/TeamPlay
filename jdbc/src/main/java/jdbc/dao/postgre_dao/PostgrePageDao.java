@@ -8,10 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import lombok.val;
 
-import java.sql.Connection;
-import java.sql.Date;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,9 +21,10 @@ public class PostgrePageDao implements PageDao {
 
     @Override
     public Optional<Page> get(int id){
-        try(Connection connection = pool.get()) {
+        try (Connection connection = pool.get();
+             Statement statement = connection.createStatement()) {
             val builder = Page.builder();
-            ResultSet set = connection.createStatement().executeQuery(
+            ResultSet set = statement.executeQuery(
                     "SELECT id, type, nickname, first_name, second_name, dob, language, main_post_id, last_post_id" +
                             " FROM web_app.pages WHERE id = " + Integer.toString(id));
 
@@ -52,8 +50,9 @@ public class PostgrePageDao implements PageDao {
 
     @Override
     public int getLastPostId(int id) {
-        try(Connection connection = pool.get()) {
-            ResultSet set = connection.createStatement().executeQuery(
+        try (Connection connection = pool.get();
+             Statement statement = connection.createStatement()) {
+            ResultSet set = statement.executeQuery(
                     "SELECT last_post_id FROM web_app.pages WHERE id = "
                             + Integer.toString(id));
             if (set.next())
@@ -77,8 +76,9 @@ public class PostgrePageDao implements PageDao {
 
     @Override
     public boolean put (Page page) {
-        try (Connection connection = pool.get()){
-            connection.createStatement().execute(
+        try (Connection connection = pool.get();
+             Statement statement = connection.createStatement()){
+            statement.execute(
                     "INSERT INTO web_app.pages VALUES (" +
                             page.getId() + ", " +
                             "'" + page.getPageType().name() + "', " +
