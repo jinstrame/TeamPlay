@@ -40,6 +40,7 @@ public class ConnectionPool implements Supplier<Connection>, AutoCloseable {
 
 
         try {
+            log.error("!!! Driver = " + driver);
             Class.forName(driver);
         } catch (ClassNotFoundException e) {
             log.error("Driver load for database failed:" + driver);

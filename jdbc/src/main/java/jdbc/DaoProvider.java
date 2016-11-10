@@ -1,7 +1,26 @@
 package jdbc;
 
+import jdbc.dao.core.AccountDao;
+import jdbc.dao.core.PageDao;
+import jdbc.dao.core.PostDao;
+import jdbc.dao.postgre_dao.PostgreProvider;
+import lombok.SneakyThrows;
 
-public class DaoProvider {
+public interface DaoProvider {
 
-// TODO: 22.10.2016 load properties, provide dao objects to clients depending on properties
+    @SneakyThrows
+    static DaoProvider getProvider(String strategy, String propertyPath){
+        switch (strategy) {
+            case ("postgres"):{
+                return new PostgreProvider(propertyPath);
+            }
+            default:{
+                throw new UnsupportedOperationException();
+            }
+        }
+    }
+
+    AccountDao getAccountDao();
+    PageDao getPageDao();
+    PostDao getPosttDao();
 }

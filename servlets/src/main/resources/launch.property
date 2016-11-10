@@ -1,0 +1,2 @@
+db = postgres
+dbProperties = C:\\Users\\jinst\\IdeaProjects\\TeamPlay\\jdbc\\src\\test\\resources\\jdbc.property

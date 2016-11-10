@@ -2,6 +2,7 @@ apply plugin: 'java'
 apply plugin: 'war'
 
 dependencies {
+    compile project(":jdbc")
     providedCompile 'org.apache.tomcat:tomcat-api:+'
     providedCompile 'org.apache.tomcat:tomcat-jsp-api:+'
 }
