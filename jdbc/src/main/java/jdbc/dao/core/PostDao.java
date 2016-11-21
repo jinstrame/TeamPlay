@@ -8,5 +8,7 @@ import java.util.List;
 public interface PostDao {
     Post get(int postId, int personId);
 
-    Agregator agregator(List<Integer> personIds, int from);
+    boolean put(Post post);
+
+    Agregator<Post> agregator(List<Integer> personIds);
 }

@@ -12,9 +12,9 @@
     <meta charset="utf-8">
     <title>Шаблон</title>
     <style>
-        @import url(style.css);
-        @import url(main_style.css);
-        @import url(extstyles.css);
+        @import url(../style.css);
+        @import url(../main_style.css);
+        @import url(../extstyles.css);
     </style>
 </head>
 <body>
@@ -40,7 +40,7 @@
                 <pagetags:pageInfo/>
             </div>
             <div class="info_image_block">
-                <img src="navi.jpg" class="info_image"/>
+                <img src="../navi.jpg" class="info_image"/>
             </div>
         </div>
         <div class="content_block">

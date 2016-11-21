@@ -30,6 +30,7 @@ public class PostgreAgregator implements Agregator<Post>{
 
     private Post provideNextPost(){
         PostAggrQueue queue = sources.poll();
+        if (queue == null) return null;
 
         Post post = queue.poll();
         if (queue.peek() != null)

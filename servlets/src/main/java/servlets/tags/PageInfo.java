@@ -6,6 +6,7 @@ import lombok.SneakyThrows;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
+import java.time.LocalDate;
 
 public class PageInfo extends TagSupport {
     @Override
@@ -14,14 +15,16 @@ public class PageInfo extends TagSupport {
         Page page = (Page)pageContext.getSession().getAttribute("page");
 
         @SuppressWarnings("StringBufferReplaceableByString") StringBuilder stringBuffer = new StringBuilder("");
-        stringBuffer.append("<h3>").append(page.getFirstName()).append(" \"").append(page.getNickname()).append("\" ").append(page.getSecondName()).append("</h3>");
-        stringBuffer.append("<br/>\n" +
-                "                <table class=\"info_table\">\n" +
-                "                    <tr>\n" +
-                "                        <td>Дата рождения</td>\n" +
-                "                        <td>").append(page.getDob()).append("</td>\n" +
-                "                        <td>").append("0</td>\n" +
-                "                    </tr>");
+        stringBuffer.append("<h3>")
+                .append(page.getFirstName()).append(" \"")
+                .append(page.getNickname()).append("\" ")
+                .append(page.getSecondName()).append("</h3>");
+        stringBuffer.append("<br/>\n");
+        stringBuffer.append("<table class=\"info_table\"><tr>\n");
+        stringBuffer.append("<td>Дата рождения</td>\n");
+        stringBuffer.append("<td>")
+                .append(page.getDob()).append("</td>\n<td>")
+                .append(calcAge(page.getDob())).append(" Лет</td>\n</tr>");
 
         stringBuffer.append("<tr><td><br/></td></tr>\n" +
                 "                    <tr>\n" +
@@ -52,6 +55,12 @@ public class PageInfo extends TagSupport {
         pageContext.getOut().print(stringBuffer.toString());
 
         return SKIP_BODY;
+    }
+
+    private int calcAge(LocalDate t){
+        int now = LocalDate.now().getYear();
+        int from = t.getYear();
+        return now - from;
     }
 
 

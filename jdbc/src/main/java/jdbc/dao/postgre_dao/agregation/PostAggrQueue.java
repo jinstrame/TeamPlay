@@ -65,7 +65,7 @@ class PostAggrQueue implements AgregatorQueue<Post>, Comparable {
         builder.firstName(pageFirstName);
         builder.secondName(pageSecondName);
         builder.pageId(pageId);
-        builder.time(set.getTime("post_time").toInstant());
+        builder.time(set.getTimestamp("post_time").toInstant());
         builder.content(set.getString("content"));
         builder.nextId(set.getInt("prev_post_id"));
 
@@ -173,6 +173,6 @@ class PostAggrQueue implements AgregatorQueue<Post>, Comparable {
         if (that.peek() == null)
             return 1;
 
-        return this.peek().getTime().compareTo(that.peek().getTime());
+        return -this.peek().getTime().compareTo(that.peek().getTime());
     }
 }

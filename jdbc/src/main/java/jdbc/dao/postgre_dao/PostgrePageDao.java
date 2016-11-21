@@ -85,7 +85,7 @@ public class PostgrePageDao implements PageDao {
                             "'" + page.getNickname() + "', " +
                             "'" + page.getFirstName() + "', " +
                             "'" + page.getSecondName() + "', " +
-                            "'" + new Date(page.getDob().toEpochDay()).toString() + "', " +
+                            "'" + Date.valueOf(page.getDob()).toString() + "', " +
                             "'" + page.getLanguage() + "', " +
                             0 + ", " +
                             0 +

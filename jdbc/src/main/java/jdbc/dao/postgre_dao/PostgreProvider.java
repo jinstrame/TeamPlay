@@ -5,8 +5,6 @@ import jdbc.connection.ConnectionPool;
 import jdbc.dao.core.AccountDao;
 import jdbc.dao.core.PageDao;
 import jdbc.dao.core.PostDao;
-import lombok.AllArgsConstructor;
-import lombok.Setter;
 
 
 public class PostgreProvider implements DaoProvider {
@@ -19,7 +17,7 @@ public class PostgreProvider implements DaoProvider {
         ConnectionPool connectionPool = new ConnectionPool(propertyFile);
         accountDao = new PostgreAccountDao();
         pageDao = new PostgrePageDao(connectionPool);
-        postDao = new PostgrePostDao(0);
+        postDao = new PostgrePostDao(connectionPool);
     }
 
     @Override

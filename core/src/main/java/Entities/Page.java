@@ -9,6 +9,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Getter
+@ToString
 @EqualsAndHashCode
         (exclude = {"pageType", "nickname", "firstName", "secondName",
                 "dob", "language", "mainPostId", "lastPostId", "teamIds", "gameIds"})
