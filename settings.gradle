@@ -2,4 +2,3 @@ rootProject.name = 'TeamPlay'
 include 'core',
         'jdbc',
         'servlets'
-

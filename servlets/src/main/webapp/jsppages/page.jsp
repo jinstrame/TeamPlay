@@ -45,6 +45,11 @@
         </div>
         <div class="content_block">
 
+            <form name="postform" method="post" accept-charset="UTF-8" >
+<%--suppress HtmlFormInputWithoutLabel --%>
+                content<input type="text" name="content"> <br>
+                <input type="submit">
+            </form>
 
             <div class="post_block">
                 <div class="bost_time_block">
