@@ -1,6 +1,7 @@
 package servlets.controllers;
 
 import Entities.Page;
+import Entities.PageTypes;
 import Entities.Post;
 import jdbc.DaoProvider;
 import jdbc.dao.core.PageDao;
@@ -52,8 +53,14 @@ public class PageController extends HttpServlet {
         req.getSession().setAttribute("posts", initPosts);
         req.getSession().setAttribute("page", page);
 
-        RequestDispatcher requestDispatcher = req.getRequestDispatcher("jsppages/page.jsp");
-        requestDispatcher.forward(req, resp);
+        if (page.getPageType() == PageTypes.PERSON) {
+            RequestDispatcher requestDispatcher = req.getRequestDispatcher("jsppages/page/person.jsp");
+            requestDispatcher.forward(req, resp);
+        }
+        else{
+            RequestDispatcher requestDispatcher = req.getRequestDispatcher("jsppages/page/team.jsp");
+            requestDispatcher.forward(req, resp);
+        }
     }
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

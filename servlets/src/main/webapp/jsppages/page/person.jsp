@@ -13,9 +13,9 @@
     <meta charset="utf-8">
     <title>Шаблон</title>
     <style>
-        @import url(../style.css);
-        @import url(../main_style.css);
-        @import url(../extstyles.css);
+        @import url(../../style.css);
+        @import url(../../main_style.css);
+        @import url(../../extstyles.css);
     </style>
 </head>
 <body>
@@ -30,7 +30,7 @@
 </header>
 <div class="main">
     <div class="left_block">
-        <a href="page" class="hvr-fade menu_link"><pagetags:localeTag key="profile"/></a>
+        <a href="" class="hvr-fade menu_link"><pagetags:localeTag key="profile"/></a>
         <a href="feed" class="hvr-fade menu_link"><pagetags:localeTag key="feed"/></a>
         <a href="http://google.com" class="hvr-fade menu_link"><pagetags:localeTag key="subscriptions"/></a>
     </div>
@@ -40,7 +40,7 @@
                 <pagetags:pageInfo/>
             </div>
             <div class="info_image_block">
-                <img src="../navi.jpg" class="info_image"/>
+                <img src="../../navi.jpg" class="info_image"/>
 
                 <div class="post_buttons">
                     <pagetags:subscribeButton/>
