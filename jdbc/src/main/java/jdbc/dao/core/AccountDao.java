@@ -1,9 +1,12 @@
 package jdbc.dao.core;
 
 import Entities.Account;
+import Entities.Page;
+
+import java.util.Optional;
 
 public interface AccountDao {
-    Account get(String login);
+    Optional<Page> isAutorized(String login, String h_password);
 
-    boolean create(String login);
+    Account register(Page page, String login, String password) throws Exception;
 }

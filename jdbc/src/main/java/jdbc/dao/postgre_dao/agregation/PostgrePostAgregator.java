@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.PriorityQueue;
 
-public class PostgreAgregator implements Agregator<Post>{
+public class PostgrePostAgregator implements Agregator<Post>{
 
     // TODO: 22.10.2016 test agregation
 
@@ -19,7 +19,7 @@ public class PostgreAgregator implements Agregator<Post>{
     private int outOfSourceSize;
     private int readed;
 
-    public PostgreAgregator(List<Integer> pageIds, ConnectionPool pool){
+    public PostgrePostAgregator(List<Integer> pageIds, ConnectionPool pool){
         sources = new PriorityQueue<>();
         for (int i : pageIds){
             PostAggrQueue q = new PostAggrQueue(i, DEFAULT_PORION_SIZE, pool);

@@ -1,6 +1,7 @@
 package jdbc;
 
 import jdbc.dao.core.AccountDao;
+import jdbc.dao.core.CommentDao;
 import jdbc.dao.core.PageDao;
 import jdbc.dao.core.PostDao;
 import jdbc.dao.postgre_dao.PostgreProvider;
@@ -22,5 +23,6 @@ public interface DaoProvider {
 
     AccountDao getAccountDao();
     PageDao getPageDao();
-    PostDao getPosttDao();
+    PostDao getPostDao();
+    CommentDao getCommentDao();
 }

@@ -7,17 +7,10 @@ import lombok.Getter;
 
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
+@Getter
 public class Account {
-    @Getter
     private String login;
-
-    private byte[] password;
-    @Getter
+    private String h_password;
     private int token;
-    @Getter
     private int pageId;
-
-    private Page getAssociatedPage(){
-        return null;
-    }
 }

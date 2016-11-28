@@ -1,12 +1,14 @@
 package servlets.tags;
 
 
+import Entities.Game;
 import Entities.Page;
 import lombok.SneakyThrows;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.time.LocalDate;
+import java.util.List;
 
 public class PageInfo extends TagSupport {
     @Override
@@ -27,17 +29,35 @@ public class PageInfo extends TagSupport {
                 .append(calcAge(page.getDob())).append(" Лет</td>\n</tr>");
 
         stringBuffer.append("<tr><td><br/></td></tr>\n" +
-                "                    <tr>\n" +
-                "                        <td>Игры</td>\n" +
-                "                        <td>Dota2</td>\n" +
-                "                        <td>1 mmr</td>\n" +
-                "                    </tr>\n" +
-                "                    <tr>\n" +
-                "                        <td></td>\n" +
-                "                        <td>Counter Strike GO</td>\n" +
-                "                        <td>Silver</td>\n" +
-                "                    </tr>\n" +
-                "                    <tr><td><br/></td></tr>\n" +
+                "                       <tr>\n" +
+                "                        <tr> \n" +
+                "                        <td>Игры</td>\n\n" +
+                "                        <td>");
+
+        stringBuffer.append("<a href=\"addgame?page=").append(page.getId())
+                .append("\" >").append("Добавить игру").append("</a>");
+        stringBuffer.append("</td>\n\n" +
+                "                        <td></td>\n\n" +
+                "                    </tr>\n");
+
+        List<Game> games = page.getGameIds();
+        for (Game game: games) {
+            StringBuffer account = new StringBuffer();
+            if (game.getAccount().equals("")){
+                account.append(game.getGame());
+            }
+            else {
+                account.append("<a href=\"").append(game.getAccount())
+                    .append("\" >").append(game.getGame()).append("</a>");
+            }
+            stringBuffer.append("<tr>\n" +
+                    "<td></td>\n" +
+                    "<td>")
+                    .append(account).append("</td>\n").append("<td>")
+                    .append(game.getRank()).append("</td>\n").append(" </tr>\n");
+        }
+
+        stringBuffer.append("<tr><td><br/></td></tr>\n" +
                 "                    <tr>\n" +
                 "                        <td>Команды</td>\n" +
                 "                        <td>GabeN Team</td>\n" +
@@ -54,7 +74,7 @@ public class PageInfo extends TagSupport {
 
         pageContext.getOut().print(stringBuffer.toString());
 
-        return SKIP_BODY;
+        return EVAL_BODY_INCLUDE;
     }
 
     private int calcAge(LocalDate t){

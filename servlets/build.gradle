@@ -5,4 +5,5 @@ dependencies {
     compile project(":jdbc")
     providedCompile 'org.apache.tomcat:tomcat-api:+'
     providedCompile 'org.apache.tomcat:tomcat-jsp-api:+'
+    compile 'javax.servlet:jstl:1.2'
 }

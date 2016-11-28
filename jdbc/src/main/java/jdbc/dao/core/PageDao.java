@@ -1,5 +1,6 @@
 package jdbc.dao.core;
 
+import Entities.Game;
 import Entities.Page;
 
 import java.util.List;
@@ -15,4 +16,10 @@ public interface PageDao {
     List<Page> search(String firstName, String secondName);
 
     boolean put(Page page);
+
+    void addGame(Game game);
+
+    void subscribe(Page subscriber, int to_id);
+
+    void unSubscribe(Page subscriber, int from_id);
 }

@@ -6,7 +6,6 @@ import jdbc.connection.ConnectionPool;
 import jdbc.dao.core.PageDao;
 import jdbc.dao.core.PostDao;
 import jdbc.dao.core.agregation.Agregator;
-import lombok.val;
 import org.junit.Test;
 
 import java.util.LinkedList;
@@ -27,7 +26,7 @@ public class PostgrePostDaoTest {
         Page p1 = pageDao.get(1).get();
         Page p2 = pageDao.get(2).get();
 
-        val builder = Post.builder();
+        Post.PostBuilder builder = Post.builder();
         builder.content("asdasdasdas");
         builder.id(1);
         builder.pageId(p1.getId());

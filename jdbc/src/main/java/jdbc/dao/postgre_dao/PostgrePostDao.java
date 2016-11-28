@@ -5,14 +5,12 @@ import Entities.Post;
 import jdbc.connection.ConnectionPool;
 import jdbc.dao.core.PostDao;
 import jdbc.dao.core.agregation.Agregator;
-import jdbc.dao.postgre_dao.agregation.PostgreAgregator;
+import jdbc.dao.postgre_dao.agregation.PostgrePostAgregator;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import lombok.val;
 
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.sql.Timestamp;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -27,6 +25,33 @@ class PostgrePostDao implements PostDao {
 
     @Override
     public Post get(int postId, int pageId) {
+        try (Connection connection = pool.get();
+             Statement statement = connection.createStatement()) {
+            ResultSet set = statement.executeQuery(
+                    "SELECT post_time, content from web_app.posts WHERE " +
+                            "page_id = " + pageId + " AND " +
+                            "post_id = " + postId );
+            set.next();
+            val builder = Post.builder();
+            builder.id(postId).pageId(pageId)
+                    .time(set.getTimestamp("post_time").toInstant())
+                    .content(set.getString("content"));
+
+            set = statement.executeQuery(
+                    "SELECT nickname, first_name, second_name FROM web_app.pages " +
+                            "WHERE id = " + pageId );
+            set.next();
+            builder.firstName(set.getString("first_name"))
+                    .secondName(set.getString("second_name"))
+                    .nickname(set.getString("nickname"));
+
+            return builder.build();
+
+        } catch (SQLException e) {
+            log.error(e.toString());
+            e.printStackTrace();
+        }
+
         return null;
     }
 
@@ -59,6 +84,6 @@ class PostgrePostDao implements PostDao {
 
     @Override
     public Agregator<Post> agregator(List<Integer> pageIds) {
-        return new PostgreAgregator(pageIds, pool);
+        return new PostgrePostAgregator(pageIds, pool);
     }
 }

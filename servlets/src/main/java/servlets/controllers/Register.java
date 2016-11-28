@@ -1,11 +1,14 @@
 package servlets.controllers;
 
+import Entities.Account;
 import Entities.Page;
 import Entities.PageTypes;
 import jdbc.DaoProvider;
+import jdbc.dao.core.AccountDao;
 import jdbc.dao.core.PageDao;
 import lombok.extern.log4j.Log4j2;
 import lombok.val;
+import security.Hash;
 import servlets.listeners.Initer;
 
 import javax.servlet.RequestDispatcher;
@@ -25,30 +28,37 @@ import java.time.LocalDate;
 public class Register extends HttpServlet {
 
     private PageDao pageDao;
+    private AccountDao accountDao;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        RequestDispatcher requestDispatcher = req.getRequestDispatcher("register.jsp");
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher("jsppages/register.jsp");
         requestDispatcher.forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
-        val builder = Page.builder();
-        builder.firstName(req.getParameter("firstname"));
-        builder.secondName(req.getParameter("lastname"));
-        builder.nickname(req.getParameter("nickname"));
-        builder.dob(LocalDate.parse(req.getParameter("dob")));
-        builder.language("ru");
-        builder.id(2);
-        builder.pageType(PageTypes.PERSON);
-        Page p = builder.build();
-        log.error(p.toString());
-        pageDao.put(p);
+        val pageBuilder = Page.builder();
+        val accountBuilder = Account.builder();
 
-        RequestDispatcher requestDispatcher = req.getRequestDispatcher("/page");
-        requestDispatcher.forward(req, resp);
+        try {
+            pageBuilder.firstName(req.getParameter("firstname"));
+            pageBuilder.secondName(req.getParameter("lastname"));
+            pageBuilder.nickname(req.getParameter("nickname"));
+            pageBuilder.dob(LocalDate.parse(req.getParameter("dob")));
+            pageBuilder.language("ru");
+            pageBuilder.pageType(PageTypes.PERSON);
+            Page p = pageBuilder.build();
+
+
+            Account account = accountDao.register(p, req.getParameter("email"), req.getParameter("password"));
+            resp.sendRedirect("/page?id=" + account.getPageId());
+
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            log.error(e.toString());
+        }
+
     }
 
     @Override
@@ -56,5 +66,6 @@ public class Register extends HttpServlet {
         ServletContext servletContext = config.getServletContext();
         DaoProvider provider = (DaoProvider) servletContext.getAttribute(Initer.DAO_PROVIDER);
         pageDao = provider.getPageDao();
+        accountDao = provider.getAccountDao();
     }
 }

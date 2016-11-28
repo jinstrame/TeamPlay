@@ -7,6 +7,7 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="/WEB-INF/pageTags.tld" prefix="pagetags"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
     <meta charset="utf-8">
@@ -24,13 +25,13 @@
             <input type="search" placeholder="Поиск">
         </form>
         <a href="http://google.com" class="hvr-fade-back header_link">Настройки</a>
-        <a href="http://google.com" class="hvr-fade-back header_link">Выйти</a>
+        <a href="logout" class="hvr-fade-back header_link">Выйти</a>
     </div>
 </header>
 <div class="main">
     <div class="left_block">
-        <a href="http://google.com" class="hvr-fade menu_link">Профиль</a>
-        <a href="http://google.com" class="hvr-fade menu_link">Лента</a>
+        <a href="page" class="hvr-fade menu_link">Профиль</a>
+        <a href="feed" class="hvr-fade menu_link">Лента</a>
         <a href="http://google.com" class="hvr-fade menu_link">Подписки</a>
         <a href="http://google.com" class="hvr-fade menu_link">Команда</a>
     </div>
@@ -41,6 +42,10 @@
             </div>
             <div class="info_image_block">
                 <img src="../navi.jpg" class="info_image"/>
+
+                <div class="post_buttons">
+                    <pagetags:subscribeButton/>
+                </div>
             </div>
         </div>
         <div class="content_block">
@@ -50,6 +55,8 @@
                 content<input type="text" name="content"> <br>
                 <input type="submit">
             </form>
+
+            <pagetags:pagePosts/>
 
             <div class="post_block">
                 <div class="bost_time_block">
@@ -92,6 +99,7 @@
                 </div>
             </div>
         </div>
+
     </div>
 </div>
 </body>

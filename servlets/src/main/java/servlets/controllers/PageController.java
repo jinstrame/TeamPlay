@@ -5,8 +5,10 @@ import Entities.Post;
 import jdbc.DaoProvider;
 import jdbc.dao.core.PageDao;
 import jdbc.dao.core.PostDao;
+import jdbc.dao.core.agregation.Agregator;
 import lombok.extern.log4j.Log4j2;
 import lombok.val;
+import servlets.filters.AuthFilter;
 import servlets.listeners.Initer;
 
 import javax.servlet.RequestDispatcher;
@@ -19,6 +21,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.Instant;
+import java.util.LinkedList;
+import java.util.List;
 
 @Log4j2
 @WebServlet("/page")
@@ -29,19 +33,30 @@ public class PageController extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Page page;
+        String s = req.getParameter("id");
+        if (s == null){
+            page = (Page)req.getSession().getAttribute(AuthFilter.AUTH);
+        } else{
+            int a = Integer.parseInt(req.getParameter(s));
+            //noinspection OptionalGetWithoutIsPresent
+            page = pageDao.get(a).get();
+        }
 
-        String s = (String)req.getParameterMap().keySet().toArray()[0];
-        int a = Integer.parseInt(req.getParameter(s));
 
-        @SuppressWarnings("OptionalGetWithoutIsPresent") Page page = pageDao.get(a).get();
+        LinkedList<Integer> source = new LinkedList<>();
+        source.add(page.getId());
+        Agregator<Post> agregator = postDao.agregator(source);
+        List<Post> initPosts = agregator.getNext(10);
+        req.getSession().setAttribute("agregator", agregator);
+        req.getSession().setAttribute("posts", initPosts);
         req.getSession().setAttribute("page", page);
 
-        RequestDispatcher requestDispatcher = req.getRequestDispatcher("page.jsp");
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher("jsppages/page.jsp");
         requestDispatcher.forward(req, resp);
     }
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
         val postBuilder = Post.builder();
         val page = (Page)req.getSession().getAttribute("page");
 
@@ -51,6 +66,10 @@ public class PageController extends HttpServlet {
         postBuilder.time(Instant.now());
         postBuilder.content(req.getParameter("content"));
 
+        postDao.put(postBuilder.build());
+
+
+
 
     }
 
@@ -59,6 +78,6 @@ public class PageController extends HttpServlet {
         ServletContext servletContext = config.getServletContext();
         DaoProvider provider = (DaoProvider) servletContext.getAttribute(Initer.DAO_PROVIDER);
         pageDao = provider.getPageDao();
-        postDao = provider.getPosttDao();
+        postDao = provider.getPostDao();
     }
 }

@@ -15,6 +15,29 @@
     </tag>
 
 
+    <tag>
+        <name>pagePosts</name>
+        <tag-class>servlets.tags.PagePosts</tag-class>
+        <body-content>empty</body-content>
+    </tag>
+
+    <tag>
+        <name>postComments</name>
+        <tag-class>servlets.tags.CommentPost</tag-class>
+        <body-content>empty</body-content>
+    </tag>
+    <tag>
+        <name>feed</name>
+        <tag-class>servlets.tags.Feed</tag-class>
+        <body-content>empty</body-content>
+    </tag>
+    <tag>
+        <name>subscribeButton</name>
+        <tag-class>servlets.tags.SubscribeButton</tag-class>
+        <body-content>empty</body-content>
+    </tag>
+
+
     <!-- Invoke 'Generate' action to add tags or functions -->
 
 

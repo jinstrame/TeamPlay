@@ -8,12 +8,14 @@ import java.util.List;
 
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Setter
 @Getter
 @ToString
 @EqualsAndHashCode
         (exclude = {"pageType", "nickname", "firstName", "secondName",
                 "dob", "language", "mainPostId", "lastPostId", "teamIds", "gameIds"})
 public class Page {
+
     private int id;
     private PageTypes pageType;
     private String nickname;
@@ -24,5 +26,6 @@ public class Page {
     private int mainPostId;
     private int lastPostId;
     private List<Integer> teamIds;
-    private List<Integer> gameIds;
+    private List<Game> gameIds;
+    private List<Integer> subscribeList;
 }
