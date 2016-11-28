@@ -4,7 +4,7 @@ Simple social network for cybersport teams and players.
 
 To do: 
 
-        i18n 90%, teams/groups50%, styles 90%, search 0%
+        i18n 90%, teams/groups90%, styles 90%, search 0%, javascript 0%
 
 Completed: 
            
