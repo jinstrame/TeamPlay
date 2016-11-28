@@ -36,6 +36,14 @@
         <tag-class>servlets.tags.SubscribeButton</tag-class>
         <body-content>empty</body-content>
     </tag>
+    <tag>
+        <name>localeTag</name>
+        <tag-class>servlets.tags.LocaleTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>key</name>
+        </attribute>
+    </tag>
 
 
     <!-- Invoke 'Generate' action to add tags or functions -->

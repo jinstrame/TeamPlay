@@ -6,11 +6,8 @@ body {
 
 header{
   padding-top: 10px;
-  margin-left: -10px;
-  margin-right: -10px;
-  margin-top: -10px;
-  margin-bottom: 20px;
-  border-radius: 5px;
+    margin: -10px -10px 20px;
+    border-radius: 5px;
   height: 60px;
     /*noinspection CssInvalidPropertyValue*/
     width: 100% + 20px;

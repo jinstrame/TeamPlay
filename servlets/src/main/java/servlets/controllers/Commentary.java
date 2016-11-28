@@ -5,7 +5,6 @@ import Entities.Page;
 import Entities.Post;
 import jdbc.DaoProvider;
 import jdbc.dao.core.CommentDao;
-import jdbc.dao.core.PageDao;
 import jdbc.dao.core.PostDao;
 import lombok.extern.log4j.Log4j2;
 import lombok.val;
@@ -26,7 +25,6 @@ import java.time.Instant;
 @Log4j2
 @WebServlet("/post")
 public class Commentary extends HttpServlet {
-    private PageDao pageDao;
     private PostDao postDao;
     private CommentDao commentDao;
 
@@ -64,7 +62,6 @@ public class Commentary extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         ServletContext servletContext = config.getServletContext();
         DaoProvider provider = (DaoProvider) servletContext.getAttribute(Initer.DAO_PROVIDER);
-        pageDao = provider.getPageDao();
         postDao = provider.getPostDao();
         commentDao = provider.getCommentDao();
     }

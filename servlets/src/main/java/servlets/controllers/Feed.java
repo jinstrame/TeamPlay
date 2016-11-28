@@ -3,7 +3,6 @@ package servlets.controllers;
 import Entities.Page;
 import Entities.Post;
 import jdbc.DaoProvider;
-import jdbc.dao.core.PageDao;
 import jdbc.dao.core.PostDao;
 import lombok.extern.log4j.Log4j2;
 import servlets.filters.AuthFilter;

@@ -13,6 +13,5 @@
 </head>
 <body>
     <pagetags:feed/>
-</form>
 </body>
 </html>

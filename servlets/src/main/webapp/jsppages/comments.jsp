@@ -1,3 +1,4 @@
+<%--suppress HtmlFormInputWithoutLabel --%>
 <%--
   Created by IntelliJ IDEA.
   User: jinst

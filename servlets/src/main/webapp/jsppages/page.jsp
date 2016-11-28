@@ -24,16 +24,15 @@
         <form class="search_form" >
             <input type="search" placeholder="Поиск">
         </form>
-        <a href="http://google.com" class="hvr-fade-back header_link">Настройки</a>
-        <a href="logout" class="hvr-fade-back header_link">Выйти</a>
+        <a href="http://google.com" class="hvr-fade-back header_link"><pagetags:localeTag key="settings"/></a>
+        <a href="logout" class="hvr-fade-back header_link"><pagetags:localeTag key="quit"/></a>
     </div>
 </header>
 <div class="main">
     <div class="left_block">
-        <a href="page" class="hvr-fade menu_link">Профиль</a>
-        <a href="feed" class="hvr-fade menu_link">Лента</a>
-        <a href="http://google.com" class="hvr-fade menu_link">Подписки</a>
-        <a href="http://google.com" class="hvr-fade menu_link">Команда</a>
+        <a href="page" class="hvr-fade menu_link"><pagetags:localeTag key="profile"/></a>
+        <a href="feed" class="hvr-fade menu_link"><pagetags:localeTag key="feed"/></a>
+        <a href="http://google.com" class="hvr-fade menu_link"><pagetags:localeTag key="subscriptions"/></a>
     </div>
     <div class="main_block">
         <div class="info_block">

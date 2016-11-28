@@ -4,6 +4,7 @@ package servlets.filters;
 import Entities.Page;
 import jdbc.DaoProvider;
 import jdbc.dao.core.AccountDao;
+import langSupport.LocaleKeyWords;
 import lombok.extern.log4j.Log4j2;
 import security.Hash;
 import servlets.listeners.Initer;
@@ -15,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
@@ -53,6 +55,8 @@ public class AuthFilter extends HttpFilter {
             if (authorize.isPresent()) {
                 log.error("condition 2");
 
+
+                session.setAttribute("locale", new LocaleKeyWords(new Locale("en")));
                 session.setAttribute(AUTH, authorize.get());
 
                 String append = "";

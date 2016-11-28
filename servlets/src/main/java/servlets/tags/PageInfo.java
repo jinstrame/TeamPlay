@@ -3,6 +3,7 @@ package servlets.tags;
 
 import Entities.Game;
 import Entities.Page;
+import langSupport.LocaleKeyWords;
 import lombok.SneakyThrows;
 
 import javax.servlet.jsp.JspException;
@@ -15,34 +16,35 @@ public class PageInfo extends TagSupport {
     @SneakyThrows
     public int doStartTag() throws JspException {
         Page page = (Page)pageContext.getSession().getAttribute("page");
+        LocaleKeyWords lkw = (LocaleKeyWords)pageContext.getSession().getAttribute("locale") ;
 
-        @SuppressWarnings("StringBufferReplaceableByString") StringBuilder stringBuffer = new StringBuilder("");
-        stringBuffer.append("<h3>")
+        @SuppressWarnings("StringBufferReplaceableByString") StringBuilder sb = new StringBuilder("");
+        sb.append("<h3>")
                 .append(page.getFirstName()).append(" \"")
                 .append(page.getNickname()).append("\" ")
                 .append(page.getSecondName()).append("</h3>");
-        stringBuffer.append("<br/>\n");
-        stringBuffer.append("<table class=\"info_table\"><tr>\n");
-        stringBuffer.append("<td>Дата рождения</td>\n");
-        stringBuffer.append("<td>")
+        sb.append("<br/>\n");
+        sb.append("<table class=\"info_table\"><tr>\n");
+        sb.append("<td>").append(lkw.get(LocaleKeyWords.DATE_OF_BIRTH)).append("</td>\n");
+        sb.append("<td>")
                 .append(page.getDob()).append("</td>\n<td>")
-                .append(calcAge(page.getDob())).append(" Лет</td>\n</tr>");
+                .append(calcAge(page.getDob())).append(" ").append(lkw.get(LocaleKeyWords.YEARS)).append("</td>\n</tr>");
 
-        stringBuffer.append("<tr><td><br/></td></tr>\n" +
+        sb.append("<tr><td><br/></td></tr>\n" +
                 "                       <tr>\n" +
                 "                        <tr> \n" +
-                "                        <td>Игры</td>\n\n" +
+                "                        <td>").append(lkw.get(LocaleKeyWords.GAMES)).append("</td>\n\n" +
                 "                        <td>");
 
-        stringBuffer.append("<a href=\"addgame?page=").append(page.getId())
+        sb.append("<a href=\"addgame?page=").append(page.getId())
                 .append("\" >").append("Добавить игру").append("</a>");
-        stringBuffer.append("</td>\n\n" +
+        sb.append("</td>\n\n" +
                 "                        <td></td>\n\n" +
                 "                    </tr>\n");
 
         List<Game> games = page.getGameIds();
         for (Game game: games) {
-            StringBuffer account = new StringBuffer();
+            StringBuilder account = new StringBuilder();
             if (game.getAccount().equals("")){
                 account.append(game.getGame());
             }
@@ -50,14 +52,14 @@ public class PageInfo extends TagSupport {
                 account.append("<a href=\"").append(game.getAccount())
                     .append("\" >").append(game.getGame()).append("</a>");
             }
-            stringBuffer.append("<tr>\n" +
+            sb.append("<tr>\n" +
                     "<td></td>\n" +
                     "<td>")
                     .append(account).append("</td>\n").append("<td>")
                     .append(game.getRank()).append("</td>\n").append(" </tr>\n");
         }
 
-        stringBuffer.append("<tr><td><br/></td></tr>\n" +
+        sb.append("<tr><td><br/></td></tr>\n" +
                 "                    <tr>\n" +
                 "                        <td>Команды</td>\n" +
                 "                        <td>GabeN Team</td>\n" +
@@ -72,7 +74,7 @@ public class PageInfo extends TagSupport {
                 "                    </tr>\n" +
                 "                </table>");
 
-        pageContext.getOut().print(stringBuffer.toString());
+        pageContext.getOut().print(sb.toString());
 
         return EVAL_BODY_INCLUDE;
     }

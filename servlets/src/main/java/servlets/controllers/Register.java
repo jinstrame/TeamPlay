@@ -5,10 +5,8 @@ import Entities.Page;
 import Entities.PageTypes;
 import jdbc.DaoProvider;
 import jdbc.dao.core.AccountDao;
-import jdbc.dao.core.PageDao;
 import lombok.extern.log4j.Log4j2;
 import lombok.val;
-import security.Hash;
 import servlets.listeners.Initer;
 
 import javax.servlet.RequestDispatcher;
@@ -27,7 +25,6 @@ import java.time.LocalDate;
 
 public class Register extends HttpServlet {
 
-    private PageDao pageDao;
     private AccountDao accountDao;
 
     @Override
@@ -39,7 +36,6 @@ public class Register extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         val pageBuilder = Page.builder();
-        val accountBuilder = Account.builder();
 
         try {
             pageBuilder.firstName(req.getParameter("firstname"));
@@ -65,7 +61,6 @@ public class Register extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         ServletContext servletContext = config.getServletContext();
         DaoProvider provider = (DaoProvider) servletContext.getAttribute(Initer.DAO_PROVIDER);
-        pageDao = provider.getPageDao();
         accountDao = provider.getAccountDao();
     }
 }

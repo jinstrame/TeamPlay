@@ -40,11 +40,10 @@ public class SubscribeButton extends TagSupport {
         if (myPage.getSubscribeList().contains(page.getId()))
             return unSubscribeButton();
 
-        StringBuffer buffer = new StringBuffer();
-        buffer.append("<form action=\"subscribe?source=").append(page.getId())
-                .append("\" method=\"post\"><button type=\"submit\">").append("Подписаться").append("</button>");
+        String s = "<form action=\"subscribe?source=" + page.getId() +
+                "\" method=\"post\"><button type=\"submit\">" + "Подписаться" + "</button>";
 
-        pageContext.getOut().print(buffer.toString());
+        pageContext.getOut().print(s);
 
         return SKIP_BODY;
     }
@@ -54,22 +53,20 @@ public class SubscribeButton extends TagSupport {
         if (!myPage.getSubscribeList().contains(page.getId()))
             return subscribeButton();
 
-        StringBuffer buffer = new StringBuffer();
-        buffer.append("<form action=\"unsubscribe?source=").append(page.getId())
-                .append("\" method=\"post\"><button type=\"submit\">").append("Вы подписаны").append("</button>");
+        String buffer = "<form action=\"unsubscribe?source=" + page.getId() +
+                "\" method=\"post\"><button type=\"submit\">" + "Вы подписаны" + "</button>";
 
-        pageContext.getOut().print(buffer.toString());
+        pageContext.getOut().print(buffer);
 
         return SKIP_BODY;
     }
 
     @SneakyThrows
     private int addToTeam(){
-        StringBuffer buffer = new StringBuffer();
-        buffer.append("<a href=\"subscribe?source=").append(page.getId())
-                .append("\">").append("В команду").append("</a>");
+        String buffer = "<a href=\"subscribe?source=" + page.getId() +
+                "\">" + "В команду" + "</a>";
 
-        pageContext.getOut().print(buffer.toString());
+        pageContext.getOut().print(buffer);
 
         return SKIP_BODY;
     }
