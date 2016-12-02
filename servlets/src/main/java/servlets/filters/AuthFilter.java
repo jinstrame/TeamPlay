@@ -48,6 +48,7 @@ public class AuthFilter extends HttpFilter {
 
         Map<String, String[]> parameterMap = request.getParameterMap();
         if (parameterMap.containsKey("password") && parameterMap.containsKey("email")) {
+            session.setAttribute("locale", new LocaleKeyWords(Locale.getDefault()));
 
             log.error("condition 1");
 
@@ -55,9 +56,10 @@ public class AuthFilter extends HttpFilter {
             if (authorize.isPresent()) {
                 log.error("condition 2");
 
+                Page auth = authorize.get();
 
-                session.setAttribute("locale", new LocaleKeyWords(new Locale("en")));
-                session.setAttribute(AUTH, authorize.get());
+                session.setAttribute("locale", new LocaleKeyWords(new Locale(auth.getLanguage())));
+                session.setAttribute(AUTH, auth);
 
                 String append = "";
                 if (request.getParameter("id") != null) {
@@ -75,6 +77,10 @@ public class AuthFilter extends HttpFilter {
 
         } else {
             log.error("condition 1.5");
+            if (request.getRequestURI().contains("register")) {
+                chain.doFilter(request, response);
+                return;
+            }
             request.getRequestDispatcher("login").forward(request, response);
         }
     }

@@ -7,44 +7,25 @@
 
     <tlib-version>1.0</tlib-version>
     <short-name>pageTags</short-name>
-    <uri>http://TeamPlay.com</uri>
+    <uri>http://TeamPlay.com/pageTags.jsp</uri>
+
     <tag>
         <name>pageInfo</name>
-        <tag-class>servlets.tags.PageInfo</tag-class>
+        <tag-class>servlets.tags.page.PageInfo</tag-class>
         <body-content>empty</body-content>
     </tag>
 
-
-    <tag>
-        <name>pagePosts</name>
-        <tag-class>servlets.tags.PagePosts</tag-class>
-        <body-content>empty</body-content>
-    </tag>
-
-    <tag>
-        <name>postComments</name>
-        <tag-class>servlets.tags.CommentPost</tag-class>
-        <body-content>empty</body-content>
-    </tag>
-    <tag>
-        <name>feed</name>
-        <tag-class>servlets.tags.Feed</tag-class>
-        <body-content>empty</body-content>
-    </tag>
     <tag>
         <name>subscribeButton</name>
-        <tag-class>servlets.tags.SubscribeButton</tag-class>
+        <tag-class>servlets.tags.page.SubscribeButton</tag-class>
         <body-content>empty</body-content>
-    </tag>
-    <tag>
-        <name>localeTag</name>
-        <tag-class>servlets.tags.LocaleTag</tag-class>
-        <body-content>empty</body-content>
-        <attribute>
-            <name>key</name>
-        </attribute>
     </tag>
 
+    <tag>
+        <name>teams</name>
+        <tag-class>servlets.tags.page.Teams</tag-class>
+        <body-content>empty</body-content>
+    </tag>
 
     <!-- Invoke 'Generate' action to add tags or functions -->
 

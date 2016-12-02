@@ -6,20 +6,18 @@
 </head>
 <body>
 <form name="regform" method="post" accept-charset="UTF-8" >
-    e-mail<input type="text" name="email"> <br>
-    password<input type="text" name="password"> <br>
+    e-mail<input type="text" name="reg_email"> <br>
+    password<input type="text" name="reg_password"> <br>
     Имя<input type="text" name="firstname"> <br>
     Фамилия<input  type="text" name="lastname"> <br>
     Ник<input  type="text" name="nickname"> <br>
     Дата рождения<input  type="date" name="dob"> <br>
-    <input list="<PageType>">
-    <datalist id="<PageType>">
-        <option value="PERSON">
-        <option value="TEAM">
-    </datalist>
     <input type="submit">
+
 </form>
 
+
+<a href="team_register">Team register</a>
 
 </body>
 </html>

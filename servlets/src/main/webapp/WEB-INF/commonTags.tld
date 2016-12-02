@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/j2ee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-jsptaglibrary_2_0.xsd"
+        version="2.0">
+
+    <tlib-version>1.0</tlib-version>
+    <short-name>commonTags</short-name>
+    <uri>http://TeamPlay.com/commonTags.jsp</uri>
+
+    <tag>
+        <name>posts</name>
+        <tag-class>servlets.tags.Posts</tag-class>
+        <body-content>empty</body-content>
+    </tag>
+
+    <tag>
+        <name>postComments</name>
+        <tag-class>servlets.tags.CommentPost</tag-class>
+        <body-content>empty</body-content>
+    </tag>
+
+    <tag>
+        <name>feed</name>
+        <tag-class>servlets.tags.Feed</tag-class>
+        <body-content>empty</body-content>
+    </tag>
+
+
+    <tag>
+        <name>localeTag</name>
+        <tag-class>servlets.tags.LocaleTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>key</name>
+        </attribute>
+    </tag>
+
+
+</taglib>

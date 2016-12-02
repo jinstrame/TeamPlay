@@ -1,4 +1,4 @@
-package servlets.tags;
+package servlets.tags.page;
 
 
 import Entities.Game;
@@ -10,6 +10,7 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 public class PageInfo extends TagSupport {
     @Override
@@ -57,6 +58,22 @@ public class PageInfo extends TagSupport {
                     "<td>")
                     .append(account).append("</td>\n").append("<td>")
                     .append(game.getRank()).append("</td>\n").append(" </tr>\n");
+        }
+
+        Set<Integer> teams = page.getTeam_list().keySet();
+        sb.append("<tr><td><br/></td></tr>\n" +
+                "                       <tr>\n" +
+                "                        <tr> \n" +
+                "                        <td>").append(lkw.get(LocaleKeyWords.TEAMS)).append("</td>\n\n" +
+                "                        <td>");
+        sb.append("</td>\n\n" +
+                "                        <td></td>\n\n" +
+                "                    </tr>\n");
+
+        for (Integer i: teams){
+            sb.append("<tr>\n<td></td>\n<td>")
+                    .append()
+                    .append(page.getTeam_list().get(i)
         }
 
         sb.append("<tr><td><br/></td></tr>\n" +

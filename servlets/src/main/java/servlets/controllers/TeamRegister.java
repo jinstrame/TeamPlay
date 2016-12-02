@@ -5,6 +5,7 @@ import Entities.Page;
 import Entities.PageTypes;
 import jdbc.DaoProvider;
 import jdbc.dao.core.AccountDao;
+import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import lombok.val;
 import servlets.listeners.Initer;
@@ -21,39 +22,36 @@ import java.io.IOException;
 import java.time.LocalDate;
 
 @Log4j2
-@WebServlet("/register")
+@WebServlet("/team_register")
 
-public class Register extends HttpServlet {
+public class TeamRegister extends HttpServlet {
 
     private AccountDao accountDao;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        RequestDispatcher requestDispatcher = req.getRequestDispatcher("jsppages/register/register.jsp");
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher("jsppages/register/team_register.jsp");
         requestDispatcher.forward(req, resp);
     }
 
     @Override
+    @SneakyThrows
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         val pageBuilder = Page.builder();
 
-        try {
+
             pageBuilder.firstName(req.getParameter("firstname"));
             pageBuilder.secondName(req.getParameter("lastname"));
-            pageBuilder.nickname(req.getParameter("nickname"));
-            pageBuilder.dob(LocalDate.parse(req.getParameter("dob")));
             pageBuilder.language("ru");
-            pageBuilder.pageType(PageTypes.PERSON);
+            pageBuilder.dob(LocalDate.now());
+            pageBuilder.pageType(PageTypes.TEAM);
             Page p = pageBuilder.build();
 
 
             Account account = accountDao.register(p, req.getParameter("reg_email"), req.getParameter("reg_password"));
             resp.sendRedirect("/page?id=" + account.getPageId());
 
-        } catch (Exception e) {
-            log.error(e.getMessage());
-            log.error(e.toString());
-        }
+
 
     }
 

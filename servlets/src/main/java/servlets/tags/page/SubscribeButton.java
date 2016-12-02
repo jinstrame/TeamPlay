@@ -1,4 +1,4 @@
-package servlets.tags;
+package servlets.tags.page;
 
 import Entities.Page;
 import Entities.PageTypes;
@@ -7,7 +7,6 @@ import servlets.filters.AuthFilter;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
-import java.io.IOException;
 
 public class SubscribeButton extends TagSupport {
 
@@ -19,15 +18,15 @@ public class SubscribeButton extends TagSupport {
         myPage = (Page)pageContext.getSession().getAttribute(AuthFilter.AUTH);
         page = (Page)pageContext.getSession().getAttribute("page");
 
-
+        if (myPage.getPageType() == PageTypes.TEAM)
+            return noButton();
+        if (page.getPageType() == PageTypes.TEAM)
+            return noButton();
         if (myPage.getId() == page.getId()){
             return noButton();
         }
-        else if (page.getPageType() == PageTypes.PERSON){
-            return subscribeButton();
-        }
         else {
-            return addToTeam();
+            return subscribeButton();
         }
     }
 
@@ -55,16 +54,6 @@ public class SubscribeButton extends TagSupport {
 
         String buffer = "<form action=\"unsubscribe?source=" + page.getId() +
                 "\" method=\"post\"><button type=\"submit\">" + "Вы подписаны" + "</button>";
-
-        pageContext.getOut().print(buffer);
-
-        return SKIP_BODY;
-    }
-
-    @SneakyThrows
-    private int addToTeam(){
-        String buffer = "<a href=\"subscribe?source=" + page.getId() +
-                "\">" + "В команду" + "</a>";
 
         pageContext.getOut().print(buffer);
 

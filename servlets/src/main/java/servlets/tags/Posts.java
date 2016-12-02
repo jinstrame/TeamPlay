@@ -8,7 +8,7 @@ import javax.servlet.jsp.tagext.TagSupport;
 import java.util.List;
 
 
-public class PagePosts extends TagSupport {
+public class Posts extends TagSupport {
 
     @SneakyThrows
     public int doStartTag() throws JspException {

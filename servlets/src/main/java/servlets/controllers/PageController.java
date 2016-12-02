@@ -39,7 +39,7 @@ public class PageController extends HttpServlet {
         if (s == null){
             page = (Page)req.getSession().getAttribute(AuthFilter.AUTH);
         } else{
-            int a = Integer.parseInt(req.getParameter(s));
+            int a = Integer.parseInt(s);
             //noinspection OptionalGetWithoutIsPresent
             page = pageDao.get(a).get();
         }

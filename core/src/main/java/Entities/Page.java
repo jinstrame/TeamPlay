@@ -4,16 +4,18 @@ import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 
 @Builder
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor
+@NoArgsConstructor
 @Setter
 @Getter
 @ToString
 @EqualsAndHashCode
         (exclude = {"pageType", "nickname", "firstName", "secondName",
-                "dob", "language", "mainPostId", "lastPostId", "teamIds", "gameIds"})
+                "dob", "language", "mainPostId", "lastPostId", "team_list", "gameIds", "subscribeList"})
 public class Page {
 
     private int id;
@@ -25,7 +27,7 @@ public class Page {
     private String language;
     private int mainPostId;
     private int lastPostId;
-    private List<Integer> teamIds;
+    private List<TeamRole> team_list;
     private List<Game> gameIds;
     private List<Integer> subscribeList;
 }

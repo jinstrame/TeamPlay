@@ -6,7 +6,9 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ taglib uri="/WEB-INF/pageTags.tld" prefix="pagetags"%>
+<%@ taglib uri="/WEB-INF/pageTags.tld" prefix="page"%>
+<%@ taglib uri="/WEB-INF/teamTags.tld" prefix="team"%>
+<%@ taglib uri="/WEB-INF/commonTags.tld" prefix="common"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
@@ -24,26 +26,28 @@
         <form class="search_form" >
             <input type="search" placeholder="Поиск">
         </form>
-        <a href="http://google.com" class="hvr-fade-back header_link"><pagetags:localeTag key="settings"/></a>
-        <a href="logout" class="hvr-fade-back header_link"><pagetags:localeTag key="quit"/></a>
+        <a href="http://google.com" class="hvr-fade-back header_link"><common:localeTag key="settings"/></a>
+        <a href="logout" class="hvr-fade-back header_link"><common:localeTag key="quit"/></a>
     </div>
 </header>
 <div class="main">
     <div class="left_block">
-        <a href="" class="hvr-fade menu_link"><pagetags:localeTag key="profile"/></a>
-        <a href="feed" class="hvr-fade menu_link"><pagetags:localeTag key="feed"/></a>
-        <a href="http://google.com" class="hvr-fade menu_link"><pagetags:localeTag key="subscriptions"/></a>
+        <a href="" class="hvr-fade menu_link"><common:localeTag key="profile"/></a>
+        <a href="feed" class="hvr-fade menu_link"><common:localeTag key="feed"/></a>
+        <a href="http://google.com" class="hvr-fade menu_link"><common:localeTag key="subscriptions"/></a>
     </div>
     <div class="main_block">
         <div class="info_block">
             <div class="info_text_block">
-                <pagetags:pageInfo/>
+                <page:pageInfo/>
+                <page:teams/>
             </div>
             <div class="info_image_block">
                 <img src="../../navi.jpg" class="info_image"/>
 
                 <div class="post_buttons">
-                    <pagetags:subscribeButton/>
+                    <page:subscribeButton/>
+                    <team:teamButton/>
                 </div>
             </div>
         </div>
@@ -55,7 +59,7 @@
                 <input type="submit">
             </form>
 
-            <pagetags:pagePosts/>
+            <common:posts/>
 
             <div class="post_block">
                 <div class="bost_time_block">
