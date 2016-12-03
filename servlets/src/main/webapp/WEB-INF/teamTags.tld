@@ -28,6 +28,12 @@
         <body-content>empty</body-content>
     </tag>
 
+    <tag>
+        <name>teamControlls</name>
+        <tag-class>servlets.tags.team.TeamControlls</tag-class>
+        <body-content>scriptless</body-content>
+    </tag>
+
     <!-- Invoke 'Generate' action to add tags or functions -->
 
 </taglib>

@@ -1,23 +1,35 @@
-<%--suppress HtmlFormInputWithoutLabel --%>
+<%--suppress ALL --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <html>
 <head>
-    <title>Title</title>
+    <meta charset="utf-8">
+    <title>Регистрация</title>
+    <style>
+        @import url(/styles/style.css);
+        @import url(/styles/main_style.css);
+        @import url(/styles/extstyles.css);
+    </style>
 </head>
 <body>
-<form name="regform" method="post" accept-charset="UTF-8" >
-    e-mail<input type="text" name="reg_email"> <br>
-    password<input type="text" name="reg_password"> <br>
-    Имя<input type="text" name="firstname"> <br>
-    Фамилия<input  type="text" name="lastname"> <br>
-    Ник<input  type="text" name="nickname"> <br>
-    Дата рождения<input  type="date" name="dob"> <br>
-    <input type="submit">
-
-</form>
-
-
-<a href="team_register">Team register</a>
-
+<div class="main">
+    <div class="main_block">
+        <div class="post_block">
+            <form class="search_form" name="regform" method="post" accept-charset="UTF-8" >
+                <table>
+                    <tr><td>e-mail</td><td><input type="text" name="reg_email"> </td></tr>
+                    <tr><td>password</td><td> <input type="text" name="reg_password"> </td></tr>
+                    <tr><td>Имя</td><td><input type="text" name="firstname"> </td></tr>
+                    <tr><td>Фамилия</td><td><input  type="text" name="lastname"></td></tr>
+                    <tr><td>Ник</td><td><input  type="text" name="nickname"></td></tr>
+                    <tr><td>Дата рождения </td><td><input  type="date" name="dob"></td></tr>
+                    <tr><td></td><td>  <input class="hvr-fade send_button" type="submit"></td></tr>
+                    <tr></tr>
+                    <tr><td></td><td> <a class="hvr-fade post_link" href="/auth/team_register">Team register</a></td></tr>
+                </table>
+            </form>
+        </div>
+    </div>
+</div>
 </body>
 </html>

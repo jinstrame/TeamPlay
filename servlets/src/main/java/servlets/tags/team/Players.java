@@ -11,9 +11,7 @@ public class Players extends TagSupport {
     @Override
     public int doStartTag() throws JspException {
         Page page = (Page)pageContext.getSession().getAttribute("page");
-        StringBuilder sb = new StringBuilder();
-        sb.append("<a href=\"players?team=").append(page.getId()).append("\"/>");
-        pageContext.getOut().print(sb.toString());
+        pageContext.getOut().print("<a href=\"players?team=" + page.getId() + "\">Игроки</a>");
 
         return SKIP_BODY;
     }

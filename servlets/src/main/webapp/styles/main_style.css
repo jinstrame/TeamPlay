@@ -1,7 +1,7 @@
 .main_block{
-  width: fit-content;
-  vertical-align: top;
-  display: inline-block;
+    width: fit-content;
+    vertical-align: top;
+    display: inline-block;
 }
 
 .info_text_block{
@@ -14,17 +14,20 @@
     border-radius: 7px;
     background-color: white;
     min-width: 592px;
+
 }
 
 
 .info_image_block{
-    display: inline-block;
+    display: block;
     background-color: white;
     margin-top: 2px;
     padding: 7px;
     border-radius: 7px;
     width: 264px;
     height: 264px;
+    vertical-align: top;
+    margin-bottom: 15px;
 }
 .info_image{
     border-width: 0;
@@ -40,7 +43,7 @@
     padding: 17px;
     border-radius: 7px;
     background-color: white;
-    width: 585px; 
+    width: 585px;
 }
 
 .bost_time_block{
@@ -69,10 +72,55 @@ td, tr{
     text-decoration:none;
     border-radius: 3px;
     display: inline-block;
-    color:darkslategrey;  
+    color:darkslategrey;
+}
+
+.send_button{
+    background-color: white;
+    border: none;
+    border-radius: 3px;
+    color: darkslategrey;
+    padding: 8px 12px 8px 12px;
+    margin: 2px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
 }
 
 .post_buttons{
     margin-top: 15px;
     text-align: right;
+}
+
+input[type=text], input[type=date]{
+    background-color: white;
+    width: 278px;
+    height: 40px;
+    padding-left: 10px;
+    border-radius: 4px;
+    border: 2px solid rgb(94, 151, 246);
+    color: rgb(94, 151, 246);
+    font-size: 1.2em;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.content{
+    -moz-box-sizing:border-box;
+    -webkit-box-sizing:border-box;
+    box-sizing:border-box;
+    display:block;
+    width:100%;
+    resize: none;
+    margin-bottom: 10px;
+}
+
+.content_block{
+    display: inline-block;
+}
+
+.right_block{
+    width: fit-content;
+    display: inline-block;
+    vertical-align: top;
 }

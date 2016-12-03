@@ -37,10 +37,10 @@ public class TeamButton extends TagSupport {
         if (myPage.getSubscribeList().contains(page.getId()))
             return removeFromTeamButton();
 
-        String s = "<form action=\"addplayer?id=" + page.getId() +
+        String s = "<form action=\"addplayer?player=" + page.getId() +
                 "\" method=\"post\">" +
-                "role <input type=\"text\" name=\"role\">" +
-                "<button type=\"submit\">" + "Добавить в команду" + "</button>";
+                "<input placeholder=\"Роль\" type=\"text\" name=\"role\">  <br>" +
+                "<input class=\"hvr-fade-back header_link\" type=\"submit\" value=\"" + "Добавить в команду" + "\"/>";
 
         pageContext.getOut().print(s);
 
@@ -52,11 +52,12 @@ public class TeamButton extends TagSupport {
         if (!myPage.getSubscribeList().contains(page.getId()))
             return addToTeamButton();
 
-        String buffer = "<form action=\"remplayer?id=" + page.getId() +
-                "\" method=\"post\"><button type=\"submit\">" + "Вы подписаны" + "</button>";
+        String buffer = "<form action=\"removefromteam?player=" + page.getId() +
+                "\" method=\"post\"><input class=\"hvr-fade-back header_link\" type=\"submit\" value=\"" + "Исключить из команды" + "\"/>";
 
         pageContext.getOut().print(buffer);
 
         return SKIP_BODY;
     }
+
 }

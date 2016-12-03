@@ -21,29 +21,6 @@ public class PostgrePageDao implements PageDao {
 
     private ConnectionPool pool;
 
-    @Override
-    public Optional<Page> sinmpleGet(int id) {
-        try (Connection connection = pool.get();
-             Statement statement = connection.createStatement()) {
-            val builder = Page.builder();
-
-
-            ResultSet set = statement.executeQuery(
-                    "SELECT id, type, nickname, first_name, second_name" +
-                            " FROM web_app.pages WHERE id = " + Integer.toString(id));
-            set.next();
-            builder.id(id);
-            builder.pageType(PageTypes.valueOf(set.getString("type")));
-            builder.nickname(set.getString("nickname"));
-            builder.firstName(set.getString("first_name"));
-            builder.secondName(set.getString("second_name"));
-
-            return Optional.of(builder.build());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return Optional.empty();
-    }
 
         @Override
     public Optional<Page> get(int id){
@@ -77,62 +54,39 @@ public class PostgrePageDao implements PageDao {
             builder.mainPostId(set.getInt("main_post_id"));
             builder.lastPostId(set.getInt("last_post_id"));
 
-
-            set = statement.executeQuery(
-                    "SELECT game_id, account_id, rank " +
-                            "FROM web_app.game_participants WHERE page_id = " + Integer.toString(id));
-            List<Game> games = new LinkedList<>();
-            while (set.next()){
-                val gameBuilder = Game.builder();
-                gameBuilder.page(id)
-                        .game(set.getString("game_id"))
-                        .account(set.getString("account_id"))
-                        .rank(set.getString("rank"));
-                games.add(gameBuilder.build());
-            }
-            builder.gameIds(games);
-
-            set = statement.executeQuery(
-                    "SELECT source_id " +
-                            "FROM web_app.subscribe WHERE subscriber_id = " + Integer.toString(id));
-            List<Integer> sub = new LinkedList<>();
-            while (set.next()){
-                sub.add(set.getInt("source_id"));
-            }
-            builder.subscribeList(sub);
-
-
-            String one;
-            String list;
-            if (type.equals(PageTypes.PERSON)){
-                one = "participant_id";
-                list = "organisation_id";
-            } else {
-                one = "organisation_id";
-                list = "participant_id";
-            }
-            //noinspection SqlResolve
-            set = statement.executeQuery(
-                    "SELECT " + list + ", participation_type" +
-                            "FROM web_app.org_participants WHERE " + one + " = " + id_s);
-            List <TeamRole> teamRoleList = new LinkedList<>();
-            if (type == PageTypes.PERSON){
-                val teamRoleBuilder = TeamRole.builder();
-                teamRoleBuilder.firstName(firstName)
-                        .lastName(lastName).nickName(nickName);
-                while (set.next()){
-                    teamRoleBuilder.role(set.getString("participation_type"));
-                    teamRoleBuilder.team(set.getInt(list));
-                    teamRoleList.add(teamRoleBuilder.build());
-                }
-            }else {
+            if (type == PageTypes.PERSON) {
+                set = statement.executeQuery(
+                        "SELECT game_id, account_id, rank " +
+                                "FROM web_app.game_participants WHERE page_id = " + Integer.toString(id));
+                List<Game> games = new LinkedList<>();
                 while (set.next()) {
-                    TeamRole role = get(set.getInt(list), id, set.getString("participation_type"));
-                    teamRoleList.add(role);
+                    val gameBuilder = Game.builder();
+                    gameBuilder.page(id)
+                            .game(set.getString("game_id"))
+                            .account(set.getString("account_id"))
+                            .rank(set.getString("rank"));
+                    games.add(gameBuilder.build());
                 }
-            }
+                builder.gameIds(games);
 
-            builder.team_list(teamRoleList);
+                set = statement.executeQuery(
+                        "SELECT source_id " +
+                                "FROM web_app.subscribe WHERE subscriber_id = " + Integer.toString(id));
+                List<Integer> sub = new LinkedList<>();
+                while (set.next()) {
+                    sub.add(set.getInt("source_id"));
+                }
+                builder.subscribeList(sub);
+            }else {
+                set = statement.executeQuery(
+                        "SELECT participant_id " +
+                                "FROM web_app.org_participants WHERE organisation_id = " + id);
+                List<Integer> sub = new LinkedList<>();
+                while (set.next()) {
+                    sub.add(set.getInt("participant_id"));
+                }
+                builder.subscribeList(sub);
+            }
 
             return Optional.of(builder.build());
         }
@@ -257,7 +211,7 @@ public class PostgrePageDao implements PageDao {
                             team.getId() + ", '" +
                             type + "')");
 
-            team.getTeam_list().put(to_add, type);
+            team.getSubscribeList().add(to_add);
 
         } catch (SQLException e) {
             log.error(e.toString());
@@ -273,7 +227,12 @@ public class PostgrePageDao implements PageDao {
                     "DELETE FROM web_app.org_participants WHERE organisation_id=" +
                             team.getId() + " AND participant_id=" + to_remove);
 
-            team.getTeam_list().remove(to_remove);
+            ListIterator<Integer> i = team.getSubscribeList().listIterator();
+            while(i.hasNext())
+                if (to_remove == i.next()) {
+                    i.remove();
+                    break;
+                }
 
         } catch (SQLException e) {
             log.error(e.toString());
@@ -281,43 +240,27 @@ public class PostgrePageDao implements PageDao {
         }
     }
 
-    private TeamRole get(int player, int team, String role){
-        try (Connection connection = pool.get();
-             Statement statement = connection.createStatement()){
-            ResultSet set = statement.executeQuery(
-                    "SELECT first_name, second_name, nickname FROM web_app.pages WHERE id = "
-                            + player);
-            if (set.next()) {
-                val builder = TeamRole.builder();
-                builder.firstName(set.getString("first_name"))
-                        .lastName(set.getString("second_name"))
-                        .nickName(set.getString("nickname"))
-                        .player(player).team(team).role(role);
-                return builder.build();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
     @Override
     public List<TeamRole> getTeamsList(Page page) {
         List<TeamRole> ret = new LinkedList<>();
         if (page.getPageType() == PageTypes.TEAM)
             return ret;
-
         try (Connection connection = pool.get();
              Statement statement = connection.createStatement()) {
             ResultSet set = statement.executeQuery(
-                    "SELECT organisation_id, participation_type" +
-                            "FROM web_app.org_participants WHERE participant_id = " + page.getId());
+                    "SELECT first_name, second_name, organisation_id, participation_type  FROM web_app.org_participants " +
+                            "JOIN web_app.pages " +
+                            "ON web_app.org_participants.participant_id = web_app.pages.id " +
+                            "WHERE participant_id = " + page.getId());
 
             val teamRoleBuilder = TeamRole.builder();
             teamRoleBuilder.firstName(page.getFirstName())
                     .lastName(page.getSecondName()).nickName(page.getNickname())
                     .player(page.getId());
             while (set.next()) {
+                teamRoleBuilder.teamName(set.getString("first_name"));
+                teamRoleBuilder.teamGame(set.getString("second_name"));
                 teamRoleBuilder.role(set.getString("participation_type"));
                 teamRoleBuilder.team(set.getInt("organisation_id"));
                 ret.add(teamRoleBuilder.build());
@@ -345,13 +288,21 @@ public class PostgrePageDao implements PageDao {
         try (Connection connection = pool.get();
              Statement statement = connection.createStatement()) {
             ResultSet set = statement.executeQuery(
-                    "SELECT participant_id, participation_type" +
-                            "FROM web_app.org_participants WHERE  = organisation_id" + page.getId() +
-                            "");
+                    "SELECT first_name, second_name, nickname, participant_id, participation_type  FROM web_app.org_participants " +
+                            "JOIN web_app.pages " +
+                            "ON web_app.org_participants.organisation_id = web_app.pages.id " +
+                            "WHERE organisation_id = " + page.getId());
 
+            val teamRoleBuilder = TeamRole.builder();
+            teamRoleBuilder.firstName(page.getFirstName())
+                    .lastName(page.getSecondName()).team(page.getId());
             while (set.next()) {
-                TeamRole role = get(set.getInt(list), id, set.getString("participation_type"));
-                ret.add(role);
+                teamRoleBuilder.firstName(set.getString("first_name"));
+                teamRoleBuilder.lastName(set.getString("second_name"));
+                teamRoleBuilder.nickName(set.getString("nickname"));
+                teamRoleBuilder.role(set.getString("participation_type"));
+                teamRoleBuilder.player(set.getInt("participant_id"));
+                ret.add(teamRoleBuilder.build());
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -361,6 +312,9 @@ public class PostgrePageDao implements PageDao {
 
     @Override
     public List<TeamRole> getTeammatesList(int id) {
-        return null;
+        Optional<Page> page = get(id);
+        if (page.isPresent())
+            return getTeammatesList(page.get());
+        else return new LinkedList<>();
     }
 }

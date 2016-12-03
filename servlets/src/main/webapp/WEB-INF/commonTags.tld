@@ -37,5 +37,11 @@
         </attribute>
     </tag>
 
+    <tag>
+        <name>placeContent</name>
+        <tag-class>servlets.tags.PlaceContent</tag-class>
+        <body-content>scriptless</body-content>
+    </tag>
+
 
 </taglib>

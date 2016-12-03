@@ -27,6 +27,12 @@
         <body-content>empty</body-content>
     </tag>
 
+    <tag>
+        <name>personControlls</name>
+        <tag-class>servlets.tags.page.PageControlls</tag-class>
+        <body-content>scriptless</body-content>
+    </tag>
+
     <!-- Invoke 'Generate' action to add tags or functions -->
 
 

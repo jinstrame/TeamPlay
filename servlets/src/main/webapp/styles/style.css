@@ -40,6 +40,7 @@ form{
 }
 
 .header_link{
+    background-color: rgb(94, 151, 246);
     font-size: 16px;
     padding: 11px 12px 11px 12px;
     margin: 2px;
@@ -47,6 +48,8 @@ form{
     text-decoration:none;
     border-radius: 3px;
     color: white;
+    border: none;
+    text-align: center;
 }
 
 .header_block{

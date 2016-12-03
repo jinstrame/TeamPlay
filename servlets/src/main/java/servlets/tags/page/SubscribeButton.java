@@ -40,7 +40,7 @@ public class SubscribeButton extends TagSupport {
             return unSubscribeButton();
 
         String s = "<form action=\"subscribe?source=" + page.getId() +
-                "\" method=\"post\"><button type=\"submit\">" + "Подписаться" + "</button>";
+                "\" method=\"post\"><input class=\"hvr-fade-back header_link\" type=\"submit\" value=\"" + "Подписаться" + "\"/>";
 
         pageContext.getOut().print(s);
 
@@ -53,7 +53,7 @@ public class SubscribeButton extends TagSupport {
             return subscribeButton();
 
         String buffer = "<form action=\"unsubscribe?source=" + page.getId() +
-                "\" method=\"post\"><button type=\"submit\">" + "Вы подписаны" + "</button>";
+                "\" method=\"post\"><input class=\"hvr-fade-back header_link\" type=\"submit\" value=\"Вы подписаны\">";
 
         pageContext.getOut().print(buffer);
 

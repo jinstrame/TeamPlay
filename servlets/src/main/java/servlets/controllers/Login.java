@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet("/login")
+@WebServlet("/auth/login")
 public class Login extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -25,6 +25,6 @@ public class Login extends HttpServlet {
             resp.sendRedirect("page?id=" + page.getId());
             return;
         }
-        req.getRequestDispatcher("login.html").forward(req,resp);
+        req.getRequestDispatcher("/jsppages/login.jsp").forward(req,resp);
     }
 }

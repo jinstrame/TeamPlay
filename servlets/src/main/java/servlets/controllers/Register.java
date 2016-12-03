@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 
 @Log4j2
-@WebServlet("/register")
+@WebServlet("/auth/register")
 
 public class Register extends HttpServlet {
 
@@ -29,7 +29,7 @@ public class Register extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        RequestDispatcher requestDispatcher = req.getRequestDispatcher("jsppages/register/register.jsp");
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher("/jsppages/register/register.jsp");
         requestDispatcher.forward(req, resp);
     }
 

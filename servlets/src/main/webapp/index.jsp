@@ -12,9 +12,9 @@
     <meta charset="utf-8">
     <title>Шаблон</title>
     <style>
-        @import url(style.css);
-        @import url(main_style.css);
-        @import url(extstyles.css);
+        @import url(styles/style.css);
+        @import url(styles/main_style.css);
+        @import url(styles/extstyles.css);
     </style>
 </head>
 <body>

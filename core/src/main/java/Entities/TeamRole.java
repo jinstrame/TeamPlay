@@ -12,4 +12,6 @@ public class TeamRole {
     String firstName;
     String lastName;
     String nickName;
+    String teamName;
+    String teamGame;
 }

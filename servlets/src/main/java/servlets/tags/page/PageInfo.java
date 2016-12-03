@@ -33,7 +33,6 @@ public class PageInfo extends TagSupport {
 
         sb.append("<tr><td><br/></td></tr>\n" +
                 "                       <tr>\n" +
-                "                        <tr> \n" +
                 "                        <td>").append(lkw.get(LocaleKeyWords.GAMES)).append("</td>\n\n" +
                 "                        <td>");
 
@@ -60,36 +59,7 @@ public class PageInfo extends TagSupport {
                     .append(game.getRank()).append("</td>\n").append(" </tr>\n");
         }
 
-        Set<Integer> teams = page.getTeam_list().keySet();
-        sb.append("<tr><td><br/></td></tr>\n" +
-                "                       <tr>\n" +
-                "                        <tr> \n" +
-                "                        <td>").append(lkw.get(LocaleKeyWords.TEAMS)).append("</td>\n\n" +
-                "                        <td>");
-        sb.append("</td>\n\n" +
-                "                        <td></td>\n\n" +
-                "                    </tr>\n");
-
-        for (Integer i: teams){
-            sb.append("<tr>\n<td></td>\n<td>")
-                    .append()
-                    .append(page.getTeam_list().get(i)
-        }
-
-        sb.append("<tr><td><br/></td></tr>\n" +
-                "                    <tr>\n" +
-                "                        <td>Команды</td>\n" +
-                "                        <td>GabeN Team</td>\n" +
-                "                        <td>Feader</td>\n" +
-                "                    </tr>\n" +
-                "                    <tr><td><br/></td></tr>\n" +
-                "                    <tr>\n" +
-                "                        <td>Контакты</td>\n" +
-                "                        <td colspan=\"2\">\n" +
-                "                            <a href=\"https://vk.com/id1\">vk.com/id9582678</a>\n" +
-                "                        </td>\n" +
-                "                    </tr>\n" +
-                "                </table>");
+        sb.append("</table>");
 
         pageContext.getOut().print(sb.toString());
 

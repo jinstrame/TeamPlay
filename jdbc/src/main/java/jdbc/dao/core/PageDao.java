@@ -2,8 +2,6 @@ package jdbc.dao.core;
 
 import Entities.Game;
 import Entities.Page;
-import Entities.Person;
-import Entities.Team;
 import Entities.TeamRole;
 
 import java.util.List;

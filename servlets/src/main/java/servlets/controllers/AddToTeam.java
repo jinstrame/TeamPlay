@@ -18,7 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @Log4j2
-@WebServlet("/addtoteam")
+@WebServlet("/addplayer")
 public class AddToTeam extends HttpServlet {
     private PageDao pageDao;
 

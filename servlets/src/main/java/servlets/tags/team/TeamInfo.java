@@ -20,7 +20,7 @@ public class TeamInfo extends TagSupport {
 
         @SuppressWarnings("StringBufferReplaceableByString") StringBuilder sb = new StringBuilder("");
         sb.append("<h3>")
-                .append(page.getFirstName()).append(" \"")
+                .append(page.getFirstName()).append(" ")
                 .append(page.getSecondName()).append("</h3>");
         sb.append("<br/>\n");
 

@@ -76,12 +76,13 @@ public class AuthFilter extends HttpFilter {
             }
 
         } else {
-            log.error("condition 1.5");
-            if (request.getRequestURI().contains("register")) {
+            log.error(request.getRequestURI());
+            if (request.getRequestURI().startsWith("/auth")
+                    ||request.getRequestURI().startsWith("/styles")) {
                 chain.doFilter(request, response);
                 return;
             }
-            request.getRequestDispatcher("login").forward(request, response);
+            request.getRequestDispatcher("/auth/login").forward(request, response);
         }
     }
 

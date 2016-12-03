@@ -11,9 +11,7 @@ public class Teams extends TagSupport {
     @Override
     public int doStartTag() throws JspException {
         Page page = (Page)pageContext.getSession().getAttribute("page");
-        StringBuilder sb = new StringBuilder();
-        sb.append("<a href=\"teams?player=").append(page.getId()).append("\"/>");
-        pageContext.getOut().print(sb.toString());
+        pageContext.getOut().print("<a href=\"teams?player=" + page.getId() + "\">Команды</a>");
 
         return SKIP_BODY;
     }

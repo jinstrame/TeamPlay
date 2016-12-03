@@ -1,5 +1,7 @@
+<%--suppress ALL --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="/WEB-INF/teamTags.tld" prefix="team"%>
+<%@ taglib uri="/WEB-INF/pageTags.tld" prefix="page"%>
 <%@ taglib uri="/WEB-INF/commonTags.tld" prefix="common"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
@@ -7,9 +9,9 @@
     <meta charset="utf-8">
     <title>Шаблон</title>
     <style>
-        @import url(../../style.css);
-        @import url(../../main_style.css);
-        @import url(../../extstyles.css);
+        @import url(../../styles/style.css);
+        @import url(../../styles/main_style.css);
+        @import url(../../styles/extstyles.css);
     </style>
 </head>
 <body>
@@ -24,8 +26,15 @@
 </header>
 <div class="main">
     <div class="left_block">
-        <a href="" class="hvr-fade menu_link"><common:localeTag key="profile"/></a>
-        <a href="http://google.com" class="hvr-fade menu_link"><common:localeTag key="subscriptions"/></a>
+        <page:personControlls>
+            <a href="/page" class="hvr-fade menu_link"><common:localeTag key="profile"/></a>
+            <a href="/feed" class="hvr-fade menu_link"><common:localeTag key="feed"/></a>
+            <a href="http://google.com" class="hvr-fade menu_link"><common:localeTag key="subscriptions"/></a>
+        </page:personControlls>
+        <team:teamControlls>
+            <a href="/page" class="hvr-fade menu_link"><common:localeTag key="profile"/></a>
+            <a href="http://google.com" class="hvr-fade menu_link"><common:localeTag key="team"/></a>
+        </team:teamControlls>
     </div>
     <div class="main_block">
         <div class="info_block">
@@ -37,11 +46,14 @@
         </div>
         <div class="content_block">
 
-            <form name="postform" method="post" accept-charset="UTF-8" >
-                <%--suppress HtmlFormInputWithoutLabel --%>
-                content<input type="text" name="content"> <br>
-                <input type="submit">
-            </form>
+            <common:placeContent>
+                <div class="post_block">
+                    <textarea class="content" form="postform" rows="10" name="content">Какой-то контент</textarea>
+                    <form id="postform" name="postform" method="post" accept-charset="UTF-8" >
+                        <input class="hvr-fade send_button" type="submit">
+                    </form>
+                </div>
+            </common:placeContent>
 
             <common:posts/>
 
