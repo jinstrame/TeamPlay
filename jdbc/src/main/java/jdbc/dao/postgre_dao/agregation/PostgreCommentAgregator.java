@@ -1,7 +1,7 @@
 package jdbc.dao.postgre_dao.agregation;
 
-import Entities.Comment;
-import Entities.Post;
+import core.Entities.Comment;
+import core.Entities.Post;
 import jdbc.connection.ConnectionPool;
 import jdbc.dao.core.agregation.Agregator;
 import lombok.extern.log4j.Log4j2;
@@ -28,7 +28,10 @@ public class PostgreCommentAgregator implements Agregator<Comment> {
         avalible = true;
     }
 
-
+    @Override
+    public int getId() {
+        return 0;
+    }
 
     @Override
     public List<Comment> getNext(int count) {

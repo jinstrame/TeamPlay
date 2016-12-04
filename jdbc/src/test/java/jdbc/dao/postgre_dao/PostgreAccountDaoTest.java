@@ -1,6 +1,6 @@
 package jdbc.dao.postgre_dao;
 
-import Entities.Page;
+import core.Entities.Page;
 import jdbc.connection.ConnectionPool;
 import jdbc.dao.core.AccountDao;
 import jdbc.dao.core.PageDao;

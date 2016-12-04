@@ -1,6 +1,6 @@
 package servlets.tags.team;
 
-import Entities.Page;
+import core.Entities.Page;
 import lombok.SneakyThrows;
 
 import javax.servlet.jsp.JspException;

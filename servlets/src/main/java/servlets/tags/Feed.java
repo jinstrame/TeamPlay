@@ -1,6 +1,6 @@
 package servlets.tags;
 
-import Entities.Post;
+import core.Entities.Post;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 

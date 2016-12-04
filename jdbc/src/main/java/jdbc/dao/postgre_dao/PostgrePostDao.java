@@ -1,7 +1,7 @@
 package jdbc.dao.postgre_dao;
 
 
-import Entities.Post;
+import core.Entities.Post;
 import jdbc.connection.ConnectionPool;
 import jdbc.dao.core.PostDao;
 import jdbc.dao.core.agregation.Agregator;
@@ -79,8 +79,25 @@ class PostgrePostDao implements PostDao {
             e.printStackTrace();
         }
         return false;
-
     }
+
+    @Override
+    public boolean delete(int pageId, int postId) {
+        try (Connection connection = pool.get();
+             Statement statement = connection.createStatement()) {
+            String q =  "DELETE FROM web_app.posts WHERE page_id = " + pageId +
+                    " AND post_id = " + postId;
+            statement.execute(q);
+            return true;
+
+        } catch (SQLException e) {
+            log.warn("cant delete post");
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
 
     @Override
     public Agregator<Post> agregator(List<Integer> pageIds) {

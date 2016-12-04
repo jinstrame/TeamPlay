@@ -29,5 +29,8 @@ public class Initer implements ServletContextListener {
         DaoProvider provider = DaoProvider.getProvider(properties.getProperty("db"), properties.getProperty("dbProperties"));
 
         context.setAttribute(DAO_PROVIDER, provider);
+
+
+
     }
 }

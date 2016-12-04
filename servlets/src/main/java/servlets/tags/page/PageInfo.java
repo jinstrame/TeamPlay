@@ -1,8 +1,8 @@
 package servlets.tags.page;
 
 
-import Entities.Game;
-import Entities.Page;
+import core.Entities.Game;
+import core.Entities.Page;
 import langSupport.LocaleKeyWords;
 import lombok.SneakyThrows;
 
@@ -10,7 +10,6 @@ import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Set;
 
 public class PageInfo extends TagSupport {
     @Override

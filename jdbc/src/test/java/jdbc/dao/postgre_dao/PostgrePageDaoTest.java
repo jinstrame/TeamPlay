@@ -1,7 +1,7 @@
 package jdbc.dao.postgre_dao;
 
-import Entities.Page;
-import Entities.PageTypes;
+import core.Entities.Page;
+import core.Entities.PageTypes;
 import jdbc.connection.ConnectionPool;
 import jdbc.dao.core.PageDao;
 import org.junit.Test;

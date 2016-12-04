@@ -1,7 +1,7 @@
 package jdbc.dao.postgre_dao;
 
-import Entities.Page;
-import Entities.Post;
+import core.Entities.Page;
+import core.Entities.Post;
 import jdbc.connection.ConnectionPool;
 import jdbc.dao.core.PageDao;
 import jdbc.dao.core.PostDao;
@@ -59,9 +59,22 @@ public class PostgrePostDaoTest {
         assertThat(l.get(0).getContent(), equalTo(post3.getContent()));
         assertThat(l.get(1).getContent(), equalTo(post2.getContent()));
         assertThat(l.get(2).getContent(), equalTo(post1.getContent()));
+    }
 
 
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
+    @Test
+    public void putAgregatorTest2() throws Exception {
+        Page p1 = pageDao.get(1).get();
+        List<Integer> ids = new LinkedList<>();
+        ids.add(p1.getId());
+        Agregator<Post> posts = postDao.agregator(ids);
 
+        int s1 = posts.getNext(10).size();
+        int s2 = posts.getNext(10).size();
+
+        System.out.println(s1);
+        System.out.println(s2);
     }
 
 

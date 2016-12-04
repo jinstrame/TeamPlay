@@ -1,8 +1,8 @@
 package jdbc.dao.core;
 
-import Entities.Comment;
-import Entities.Page;
-import Entities.Post;
+import core.Entities.Comment;
+import core.Entities.Page;
+import core.Entities.Post;
 import jdbc.dao.core.agregation.Agregator;
 
 import java.time.Instant;

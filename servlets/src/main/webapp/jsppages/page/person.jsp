@@ -12,18 +12,7 @@
         @import url(/styles/main_style.css);
         @import url(/styles/extstyles.css);
     </style>
-<%--suppress JSUnresolvedLibraryURL --%>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script>
-        function loadPosts() {
-            var xhr = new XMLHttpRequest();
-            xhr.open('GET', '/page');
-            xhr.onload = function() {
-                    alert('adasdasdsad');
-            };
-            xhr.send();
-        }
-    </script>
+    <script src="/scripts/postLoader.js"></script>
 </head>
 <body>
 <header>
@@ -48,7 +37,7 @@
         </team:teamControlls>
     </div>
     <div class="main_block">
-        <div class="content_block">
+        <div id="content_block" class="content_block">
             <div class="info_text_block">
                 <page:pageInfo/>
                 <page:teams/>
@@ -63,13 +52,17 @@
                 </div>
             </common:placeContent>
             <common:posts/>
-            <button id="loadPosts" onclick="loadPosts()">load</button>
         </div>
         <div class="right_block">
             <div class="info_image_block">
-                <img src="../../navi.jpg" class="info_image"/>
+<%--suppress HtmlUnknownTarget --%>
+                <page:avatar/>
             </div>
             <div>
+                <form action="/avaupload" id="imgform" name="imgform" method="post" enctype="multipart/form-data" >
+                    <input type="file" name="image" id="fileupload">
+                    <input class="hvr-fade send_button" type="submit">
+                </form>
                 <page:subscribeButton/>
                 <team:teamButton/>
             </div>

@@ -1,7 +1,4 @@
-package Entities;
-
-
-import lombok.*;
+package core.Entities;
 
 
 public enum PageTypes {

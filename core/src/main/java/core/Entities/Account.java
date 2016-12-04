@@ -1,4 +1,4 @@
-package Entities;
+package core.Entities;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;

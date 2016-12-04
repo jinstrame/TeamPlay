@@ -1,10 +1,9 @@
-package Entities;
+package core.Entities;
 
 import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 
 @Builder
@@ -30,4 +29,5 @@ public class Page {
     private List<TeamRole> team_list;
     private List<Game> gameIds;
     private List<Integer> subscribeList;
+    private String avaId = "";
 }

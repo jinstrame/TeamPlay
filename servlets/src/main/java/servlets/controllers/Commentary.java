@@ -1,8 +1,8 @@
 package servlets.controllers;
 
-import Entities.Comment;
-import Entities.Page;
-import Entities.Post;
+import core.Entities.Comment;
+import core.Entities.Page;
+import core.Entities.Post;
 import jdbc.DaoProvider;
 import jdbc.dao.core.CommentDao;
 import jdbc.dao.core.PostDao;

@@ -1,6 +1,6 @@
 package servlets.controllers;
 
-import Entities.Page;
+import core.Entities.Page;
 import servlets.filters.AuthFilter;
 
 import javax.servlet.ServletException;

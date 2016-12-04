@@ -1,6 +1,6 @@
 package jdbc.dao.postgre_dao.agregation;
 
-import Entities.Post;
+import core.Entities.Post;
 import jdbc.connection.ConnectionPool;
 import jdbc.dao.core.agregation.Agregator;
 
@@ -18,6 +18,7 @@ public class PostgrePostAgregator implements Agregator<Post>{
     private int nextIndex = 0;
     private int outOfSourceSize;
     private int readed;
+    private int index;
 
     public PostgrePostAgregator(List<Integer> pageIds, ConnectionPool pool){
         sources = new PriorityQueue<>();
@@ -26,6 +27,17 @@ public class PostgrePostAgregator implements Agregator<Post>{
             if (q.peek() != null)
                 sources.add(q);
         }
+        if (pageIds.size() > 1)
+            index = -1;
+        else if (pageIds.size() == 1)
+            index = pageIds.get(0);
+        else
+            index = 0;
+    }
+
+    @Override
+    public int getId() {
+        return index;
     }
 
     private Post provideNextPost(){
@@ -49,7 +61,7 @@ public class PostgrePostAgregator implements Agregator<Post>{
 
             ret.add(next);
         }
-        sources.forEach(PostAggrQueue::reset);
+
         readed+=ret.size();
 
         return ret;

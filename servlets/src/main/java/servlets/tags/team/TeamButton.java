@@ -1,7 +1,7 @@
 package servlets.tags.team;
 
-import Entities.Page;
-import Entities.PageTypes;
+import core.Entities.Page;
+import core.Entities.PageTypes;
 import lombok.SneakyThrows;
 import servlets.filters.AuthFilter;
 

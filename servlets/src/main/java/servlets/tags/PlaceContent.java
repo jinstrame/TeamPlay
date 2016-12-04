@@ -1,8 +1,6 @@
 package servlets.tags;
 
-import Entities.Page;
-import langSupport.LocaleKeyWords;
-import lombok.Setter;
+import core.Entities.Page;
 import lombok.SneakyThrows;
 import servlets.filters.AuthFilter;
 

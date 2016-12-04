@@ -1,8 +1,8 @@
 package servlets.controllers;
 
-import Entities.Account;
-import Entities.Page;
-import Entities.PageTypes;
+import core.Entities.Account;
+import core.Entities.Page;
+import core.Entities.PageTypes;
 import jdbc.DaoProvider;
 import jdbc.dao.core.AccountDao;
 import lombok.SneakyThrows;

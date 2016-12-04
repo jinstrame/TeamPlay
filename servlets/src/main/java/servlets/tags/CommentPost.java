@@ -1,7 +1,7 @@
 package servlets.tags;
 
-import Entities.Comment;
-import Entities.Post;
+import core.Entities.Comment;
+import core.Entities.Post;
 import lombok.SneakyThrows;
 
 import javax.servlet.jsp.JspException;

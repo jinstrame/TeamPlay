@@ -21,7 +21,6 @@ public class PostgreProvider implements DaoProvider {
         postDao = new PostgrePostDao(connectionPool);
         accountDao = new PostgreAccountDao(connectionPool, pageDao);
         commentDao = new PostgreCommentDao(connectionPool);
-
     }
 
     @Override

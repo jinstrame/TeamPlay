@@ -1,7 +1,7 @@
 package servlets.filters;
 
 
-import Entities.Page;
+import core.Entities.Page;
 import jdbc.DaoProvider;
 import jdbc.dao.core.AccountDao;
 import langSupport.LocaleKeyWords;
@@ -82,6 +82,8 @@ public class AuthFilter extends HttpFilter {
                 chain.doFilter(request, response);
                 return;
             }
+            if (request.getRequestURI().contains("loadposts"))
+                return;
             request.getRequestDispatcher("/auth/login").forward(request, response);
         }
     }

@@ -1,7 +1,7 @@
 package jdbc.dao.core;
 
-import Entities.Account;
-import Entities.Page;
+import core.Entities.Account;
+import core.Entities.Page;
 
 import java.util.Optional;
 

@@ -1,6 +1,6 @@
 package servlets.controllers;
 
-import Entities.Game;
+import core.Entities.Game;
 import jdbc.DaoProvider;
 import jdbc.dao.core.PageDao;
 import lombok.extern.log4j.Log4j2;

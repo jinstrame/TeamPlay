@@ -1,9 +1,9 @@
 package jdbc.dao.postgre_dao;
 
-import Entities.Game;
-import Entities.Page;
-import Entities.PageTypes;
-import Entities.TeamRole;
+import core.Entities.Game;
+import core.Entities.Page;
+import core.Entities.PageTypes;
+import core.Entities.TeamRole;
 import jdbc.connection.ConnectionPool;
 import jdbc.dao.core.PageDao;
 import lombok.AllArgsConstructor;
@@ -22,7 +22,7 @@ public class PostgrePageDao implements PageDao {
     private ConnectionPool pool;
 
 
-        @Override
+    @Override
     public Optional<Page> get(int id){
         try (Connection connection = pool.get();
              Statement statement = connection.createStatement()) {
@@ -77,6 +77,12 @@ public class PostgrePageDao implements PageDao {
                     sub.add(set.getInt("source_id"));
                 }
                 builder.subscribeList(sub);
+
+                set = statement.executeQuery(
+                        "SELECT ava_id FROM web_app.page_avatars WHERE page_id = " + Integer.toString(id));
+                if (set.next())
+                    builder.avaId(set.getString("ava_id"));
+
             }else {
                 set = statement.executeQuery(
                         "SELECT participant_id " +
@@ -316,5 +322,20 @@ public class PostgrePageDao implements PageDao {
         if (page.isPresent())
             return getTeammatesList(page.get());
         else return new LinkedList<>();
+    }
+
+    @Override
+    public void updateAvatar(Page page, String avaId){
+        try (Connection connection = pool.get();
+             Statement statement = connection.createStatement()) {
+            statement.execute("DELETE FROM web_app.page_avatars WHERE page_id = " + page.getId());
+            statement.execute("INSERT INTO web_app.page_avatars VALUES (" +
+                            page.getId() + ", '" + avaId +  "')");
+
+            page.setAvaId(avaId);
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

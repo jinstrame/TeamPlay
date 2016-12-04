@@ -1,15 +1,12 @@
 package servlets.tags.team;
 
 
-import Entities.Game;
-import Entities.Page;
+import core.Entities.Page;
 import langSupport.LocaleKeyWords;
 import lombok.SneakyThrows;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
-import java.time.LocalDate;
-import java.util.List;
 
 public class TeamInfo extends TagSupport {
     @Override

@@ -1,7 +1,7 @@
 package jdbc.dao.postgre_dao.agregation;
 
-import Entities.Page;
-import Entities.Post;
+import core.Entities.Page;
+import core.Entities.Post;
 import jdbc.connection.ConnectionPool;
 import jdbc.dao.core.agregation.AgregatorQueue;
 import jdbc.dao.postgre_dao.PostgrePageDao;

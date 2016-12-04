@@ -1,7 +1,7 @@
 package servlets.controllers;
 
 
-import Entities.Page;
+import core.Entities.Page;
 import jdbc.DaoProvider;
 import jdbc.dao.core.PageDao;
 import lombok.extern.log4j.Log4j2;

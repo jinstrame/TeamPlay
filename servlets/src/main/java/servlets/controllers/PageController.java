@@ -1,8 +1,8 @@
 package servlets.controllers;
 
-import Entities.Page;
-import Entities.PageTypes;
-import Entities.Post;
+import core.Entities.Page;
+import core.Entities.PageTypes;
+import core.Entities.Post;
 import jdbc.DaoProvider;
 import jdbc.dao.core.PageDao;
 import jdbc.dao.core.PostDao;
@@ -44,12 +44,12 @@ public class PageController extends HttpServlet {
             page = pageDao.get(a).get();
         }
 
-
         LinkedList<Integer> source = new LinkedList<>();
         source.add(page.getId());
         Agregator<Post> agregator = postDao.agregator(source);
         List<Post> initPosts = agregator.getNext(10);
         req.getSession().setAttribute("agregator", agregator);
+        req.getSession().setAttribute("agregator_sources", source);
         req.getSession().setAttribute("posts", initPosts);
         req.getSession().setAttribute("page", page);
 
@@ -65,7 +65,7 @@ public class PageController extends HttpServlet {
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         val postBuilder = Post.builder();
-        val page = (Page)req.getSession().getAttribute("page");
+        val page = (Page)req.getSession().getAttribute(AuthFilter.AUTH);
 
         postBuilder.firstName(page.getFirstName()).secondName(page.getSecondName()).nickname(page.getNickname());
         postBuilder.pageId(page.getId());
@@ -73,11 +73,11 @@ public class PageController extends HttpServlet {
         postBuilder.time(Instant.now());
         postBuilder.content(req.getParameter("content"));
 
-        postDao.put(postBuilder.build());
-
-
-
-
+        boolean success = postDao.put(postBuilder.build());
+        if (success) {
+            page.setLastPostId(page.getLastPostId() + 1);
+            resp.sendRedirect("/page");
+        }
     }
 
     @Override

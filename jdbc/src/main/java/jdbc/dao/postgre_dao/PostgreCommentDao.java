@@ -1,9 +1,9 @@
 package jdbc.dao.postgre_dao;
 
 
-import Entities.Comment;
-import Entities.Page;
-import Entities.Post;
+import core.Entities.Comment;
+import core.Entities.Page;
+import core.Entities.Post;
 import jdbc.connection.ConnectionPool;
 import jdbc.dao.core.CommentDao;
 import jdbc.dao.core.agregation.Agregator;

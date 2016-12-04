@@ -1,8 +1,8 @@
 package jdbc.dao.core;
 
-import Entities.Game;
-import Entities.Page;
-import Entities.TeamRole;
+import core.Entities.Game;
+import core.Entities.Page;
+import core.Entities.TeamRole;
 
 import java.util.List;
 import java.util.Optional;
@@ -36,4 +36,6 @@ public interface PageDao {
     void addToTeam(Page team, int to_add, String type);
 
     void removeFromTeam(Page team, int to_remove);
+
+    void updateAvatar(Page page, String avaId);
 }
