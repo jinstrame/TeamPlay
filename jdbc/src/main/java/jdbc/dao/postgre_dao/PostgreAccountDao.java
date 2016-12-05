@@ -19,8 +19,6 @@ import java.util.Optional;
 @AllArgsConstructor
 public class PostgreAccountDao implements AccountDao {
 
-    // TODO: 22.10.2016 implement account dao
-
     private ConnectionPool pool;
     private PageDao pageDao;
 

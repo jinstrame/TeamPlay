@@ -18,9 +18,6 @@ import java.util.List;
 @Log4j2
 @AllArgsConstructor
 class PostgrePostDao implements PostDao {
-
-    // TODO: 22.10.2016 implement post dao
-
     private ConnectionPool pool;
 
     @Override
