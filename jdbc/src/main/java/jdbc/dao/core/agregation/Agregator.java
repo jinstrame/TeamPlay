@@ -12,17 +12,11 @@ public interface Agregator<T>{
     int getId();
 
     /**
-     * get List of next <code>count</code> elements
+     * Gets List of next <code>count</code> elements
      * @param count count of elements to load
      */
 
     List<T> getNext(int count);
-
-    /**
-     *
-     * @return maximum elements to get from this Agregator
-     */
-    int size();
 
 
     /**

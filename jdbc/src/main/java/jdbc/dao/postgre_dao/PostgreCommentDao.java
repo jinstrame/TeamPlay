@@ -2,7 +2,6 @@ package jdbc.dao.postgre_dao;
 
 
 import core.Entities.Comment;
-import core.Entities.Page;
 import core.Entities.Post;
 import jdbc.connection.ConnectionPool;
 import jdbc.dao.core.CommentDao;
@@ -29,8 +28,23 @@ public class PostgreCommentDao implements CommentDao {
     }
 
     @Override
-    public Comment get(Post post, Page commentator, Instant time) {
-        return null;
+    public void delete(String page, String post, String commentator, String id) {
+
+        String time = Timestamp.from(Instant.ofEpochMilli(Long.parseLong(id))).toString();
+
+        try(Connection con = pool.get();
+            Statement statement = con.createStatement()) {
+            statement.execute(
+                    "DELETE FROM web_app.comments " +
+                            "WHERE page_id='" + page+
+                            "' AND post_id='" + post+
+                            "' AND comments.commentator_id='" + commentator+
+                            "' AND time='" + time + "'");
+        } catch (SQLException e) {
+            log.error(e.toString());
+            e.printStackTrace();
+        }
+
     }
 
     @Override

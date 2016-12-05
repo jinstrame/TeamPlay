@@ -20,11 +20,6 @@ public interface AgregatorQueue<T>{
      */
     T peek();
 
-    /**
-     *
-     * @return int Maximum elements to get from this queue.
-     */
-    int size();
 
     /**
      *

@@ -124,3 +124,11 @@ input[type=text], input[type=date]{
     display: inline-block;
     vertical-align: top;
 }
+
+.about_block{
+    text-align: left;
+    width: 90%;
+    margin-left: 15px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}

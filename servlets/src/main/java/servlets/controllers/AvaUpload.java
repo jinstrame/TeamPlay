@@ -5,7 +5,6 @@ import core.ImageProcessor;
 import jdbc.DaoProvider;
 import jdbc.dao.core.PageDao;
 import lombok.extern.log4j.Log4j2;
-import servlets.filters.AuthFilter;
 import servlets.listeners.Initer;
 
 import javax.servlet.ServletConfig;
@@ -19,6 +18,8 @@ import javax.servlet.http.Part;
 import java.io.IOException;
 import java.io.InputStream;
 
+import static servlets.listeners.DefaultSessionParams.AUTH;
+
 @Log4j2
 @MultipartConfig
 public class AvaUpload extends HttpServlet {
@@ -30,7 +31,7 @@ public class AvaUpload extends HttpServlet {
         Part filePart = request.getPart("image");
         try (InputStream fileContent = filePart.getInputStream()){
             String imgId = imgp.storeImage(fileContent, filePart.getSubmittedFileName());
-            Page me = (Page) request.getSession().getAttribute(AuthFilter.AUTH);
+            Page me = (Page) request.getSession().getAttribute(AUTH);
             pageDao.updateAvatar(me, imgId);
 
             response.sendRedirect("/page");

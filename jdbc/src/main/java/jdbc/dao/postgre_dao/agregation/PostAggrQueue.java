@@ -16,18 +16,9 @@ import java.util.LinkedList;
 import java.util.Optional;
 
 
-/**
- * Implementation of <code>AgreratorOueue</code> interface for <code>Post</code> objects.
- * Implements AgregatorQueue, Comparable interfaces with generic parameter <code>Page</code>.
- * Can be compared with other <code>PostAggrQueue</code> by comparing <code>time</code> fields
- * of both queues head elements
- */
-
 @Log4j2
 class PostAggrQueue implements AgregatorQueue<Post>, Comparable {
 
-    // TODO: 22.10.2016 test queue
-    private int size;
     private ConnectionPool pool;
 
     private int pageId;
@@ -51,7 +42,7 @@ class PostAggrQueue implements AgregatorQueue<Post>, Comparable {
             Page p = optPage.get();
             pageNickname = p.getNickname();
             pageFirstName = p.getFirstName();
-            pageSecondName = p.getSecondName();
+            pageSecondName = p.getLastName();
             this.pageId = p.getId();
             lastLoaded = p.getLastPostId() + 1;
             lastTried = lastLoaded;
@@ -63,7 +54,7 @@ class PostAggrQueue implements AgregatorQueue<Post>, Comparable {
 
         builder.nickname(pageNickname);
         builder.firstName(pageFirstName);
-        builder.secondName(pageSecondName);
+        builder.lastName(pageSecondName);
         builder.pageId(pageId);
         builder.time(set.getTimestamp("post_time").toInstant());
         builder.content(set.getString("content"));
@@ -84,16 +75,15 @@ class PostAggrQueue implements AgregatorQueue<Post>, Comparable {
             get();
     }
 
-
     private void get(){
         boolean loaded = false;
         loadedSet = new LinkedList<>();
         while (canLoad() && !loaded){
-            loaded = getCycle();
+            loaded = getPortion();
         }
     }
 
-    private boolean getCycle(){
+    private boolean getPortion(){
         lastTried -= portionSize;
         try(Connection con = pool.get();
             Statement statement = con.createStatement()) {
@@ -118,11 +108,6 @@ class PostAggrQueue implements AgregatorQueue<Post>, Comparable {
         return false;
     }
 
-    void reset(){
-        lastTried = lastLoaded;
-        loadedSet = null;
-    }
-
     @Override
     public Post poll() {
         getFromDbIfEmpty();
@@ -137,32 +122,17 @@ class PostAggrQueue implements AgregatorQueue<Post>, Comparable {
     }
 
 
-    private void updateSize(){
-        try (Connection con = pool.get();
-             Statement statement = con.createStatement()) {
-            ResultSet set = statement.executeQuery(
-                    "SELECT COUNT(*) AS cnt FROM web_app.posts WHERE page_id = " + pageId);
-
-            set.next();
-            size = set.getInt("cnt");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public int size() {
-        updateSize();
-        return size;
-    }
-
-
     @Override
     public int readed() {
         return removed;
     }
 
 
+    /**
+     * Compares this queue with Another.
+     * Comparation only for first elements of both queues/
+     * @param o queue to compare with
+     */
     @Override
     public int compareTo(Object o) {
         if (this.peek() == null)

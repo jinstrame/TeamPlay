@@ -13,15 +13,15 @@ public class ConnectionPoolTest {
     public void TestConnectionPool() throws Exception{
         final ConnectionPool connectionPool = new ConnectionPool("src\\test\\resources\\jdbc.property");
 
-        System.out.println("get connection 1");
+        System.out.println("delete connection 1");
         Connection c1 = connectionPool.get();
-        System.out.println("get connection 2");
+        System.out.println("delete connection 2");
         Connection c2 = connectionPool.get();
-        System.out.println("get connection 3");
+        System.out.println("delete connection 3");
         Connection c3 = connectionPool.get();
 
         Thread t = new Thread(() -> {
-            System.out.println("thread tries to get a new connection");
+            System.out.println("thread tries to delete a new connection");
             try (Connection c = connectionPool.get()) {
                 System.out.println("connection success");
                 Statement statement = c.createStatement();

@@ -16,7 +16,6 @@ import java.util.Properties;
 public class Initer implements ServletContextListener {
 
     public static final String DAO_PROVIDER = "daoProvider";
-
     @Override
     @SneakyThrows
     public void contextInitialized(ServletContextEvent sce) {
@@ -29,8 +28,5 @@ public class Initer implements ServletContextListener {
         DaoProvider provider = DaoProvider.getProvider(properties.getProperty("db"), properties.getProperty("dbProperties"));
 
         context.setAttribute(DAO_PROVIDER, provider);
-
-
-
     }
 }

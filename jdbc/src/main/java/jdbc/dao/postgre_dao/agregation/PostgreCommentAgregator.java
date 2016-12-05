@@ -33,6 +33,13 @@ public class PostgreCommentAgregator implements Agregator<Comment> {
         return 0;
     }
 
+
+    /**
+     * Loads Comments from db.
+     * Actually loads all comments for single post.
+     * @param count count of elements to load
+     * @return List of Comments
+     */
     @Override
     public List<Comment> getNext(int count) {
         LinkedList<Comment> comments = new LinkedList<>();
@@ -41,21 +48,22 @@ public class PostgreCommentAgregator implements Agregator<Comment> {
              Statement statement = con.createStatement()) {
 
             ResultSet workSet = statement.executeQuery(
-                    "SELECT commentator_id, content, time FROM web_app.comments " +
+                    "SELECT commentator_id, content, time, first_name, second_name, nickname " +
+                            "FROM web_app.comments JOIN web_app.pages ON commentator_id=id " +
                             "WHERE page_id = " + post.getPageId() + " AND post_id = " + post.getId() +
-                            " ORDER BY time");
+                            " ORDER BY time DESC");
 
-            for (int i = 0; i < count; i++) {
-                log.error("cycle loop !!!!!!!!!!!");
-                if (!workSet.next()) {
 
-                    break;
-                }
-                val builder = Comment.builder();
-                builder.pageId(post.getPageId()).postId(post.getId());
-                builder.commentator_id(workSet.getInt("commentator_id"));
-                builder.content(workSet.getString("content"));
-                builder.time(workSet.getTimestamp("time").toInstant());
+            val builder = Comment.builder();
+            while (workSet.next()){
+
+                builder.pageId(post.getPageId()).postId(post.getId())
+                        .commentator_id(workSet.getInt("commentator_id"))
+                        .content(workSet.getString("content"))
+                        .time(workSet.getTimestamp("time").toInstant())
+                        .firstName(workSet.getString("first_name"))
+                        .lastName(workSet.getString("second_name"))
+                        .nickName(workSet.getString("nickname"));
 
                 comments.add(builder.build());
             }
@@ -67,10 +75,6 @@ public class PostgreCommentAgregator implements Agregator<Comment> {
         return comments;
     }
 
-    @Override
-    public int size() {
-        throw new UnsupportedOperationException("size PostgreCommentAgregation");
-    }
 
     @Override
     public int readed() {

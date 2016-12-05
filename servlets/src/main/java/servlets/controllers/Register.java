@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.TimeZone;
 
 @Log4j2
 @WebServlet("/auth/register")
@@ -36,19 +37,21 @@ public class Register extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         val pageBuilder = Page.builder();
+        req.setCharacterEncoding("UTF-8");
 
         try {
-            pageBuilder.firstName(req.getParameter("firstname"));
-            pageBuilder.secondName(req.getParameter("lastname"));
-            pageBuilder.nickname(req.getParameter("nickname"));
-            pageBuilder.dob(LocalDate.parse(req.getParameter("dob")));
-            pageBuilder.language("ru");
-            pageBuilder.pageType(PageTypes.PERSON);
+            pageBuilder.firstName(req.getParameter("firstname"))
+                    .lastName(req.getParameter("lastname"))
+                    .nickname(req.getParameter("nickname"))
+                    .dob(LocalDate.parse(req.getParameter("dob")))
+                    .language(req.getParameter("language"))
+                    .timeZone(TimeZone.getTimeZone(req.getParameter("timezone")))
+                    .pageType(PageTypes.PERSON);
             Page p = pageBuilder.build();
 
 
             Account account = accountDao.register(p, req.getParameter("reg_email"), req.getParameter("reg_password"));
-            resp.sendRedirect("/page?id=" + account.getPageId());
+            resp.sendRedirect("/page");
 
         } catch (Exception e) {
             log.error(e.getMessage());

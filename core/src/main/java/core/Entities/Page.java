@@ -1,31 +1,29 @@
 package core.Entities;
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.TimeZone;
 
 
 @Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @Setter
 @Getter
-@ToString
-@EqualsAndHashCode
-        (exclude = {"pageType", "nickname", "firstName", "secondName",
-                "dob", "language", "mainPostId", "lastPostId", "team_list", "gameIds", "subscribeList"})
 public class Page {
 
     private int id;
     private PageTypes pageType;
     private String nickname;
     private String firstName;
-    private String secondName;
+    private String lastName;
     private LocalDate dob;
     private String language;
-    private int mainPostId;
     private int lastPostId;
+    private String about;
+    private TimeZone timeZone;
     private List<TeamRole> team_list;
     private List<Game> gameIds;
     private List<Integer> subscribeList;

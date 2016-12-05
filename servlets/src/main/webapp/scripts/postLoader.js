@@ -1,7 +1,7 @@
 //noinspection JSUnusedGlobalSymbols
-function loadPosts() {
+function loadMore(reqPart) {
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', '/loadposts');
+    xhr.open('GET', '/load' + reqPart);
     xhr.onload = function() {
         var div = document.createElement('div');
         div.className = 'row';

@@ -2,25 +2,31 @@ package servlets.tags.page;
 
 import core.Entities.Page;
 import core.Entities.PageTypes;
+import langSupport.LocaleKeyWords;
 import lombok.SneakyThrows;
-import servlets.filters.AuthFilter;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
 
+import static servlets.listeners.DefaultSessionParams.*;
+
+
+/**
+ * Places subscribe button, if it should be
+ */
 public class SubscribeButton extends TagSupport {
 
     private Page myPage;
     private Page page;
+    private LocaleKeyWords lkw;
 
     @Override
     public int doStartTag() throws JspException{
-        myPage = (Page)pageContext.getSession().getAttribute(AuthFilter.AUTH);
-        page = (Page)pageContext.getSession().getAttribute("page");
+        myPage = (Page)pageContext.getSession().getAttribute(AUTH);
+        page = (Page)pageContext.getSession().getAttribute(PAGE);
+        lkw = (LocaleKeyWords) pageContext.getSession().getAttribute(LOCALE);
 
         if (myPage.getPageType() == PageTypes.TEAM)
-            return noButton();
-        if (page.getPageType() == PageTypes.TEAM)
             return noButton();
         if (myPage.getId() == page.getId()){
             return noButton();
@@ -40,7 +46,9 @@ public class SubscribeButton extends TagSupport {
             return unSubscribeButton();
 
         String s = "<form action=\"subscribe?source=" + page.getId() +
-                "\" method=\"post\"><input class=\"hvr-fade-back header_link\" type=\"submit\" value=\"" + "Подписаться" + "\"/>";
+                "\" method=\"post\"><input class=\"hvr-fade-back header_link\" type=\"submit\" value=\"" +
+                lkw.get(LocaleKeyWords.SUBSCRIBE) +
+                "\"/>";
 
         pageContext.getOut().print(s);
 
@@ -53,7 +61,9 @@ public class SubscribeButton extends TagSupport {
             return subscribeButton();
 
         String buffer = "<form action=\"unsubscribe?source=" + page.getId() +
-                "\" method=\"post\"><input class=\"hvr-fade-back header_link\" type=\"submit\" value=\"Вы подписаны\">";
+                "\" method=\"post\"><input class=\"hvr-fade-back header_link\" type=\"submit\" value=\"" +
+                lkw.get(LocaleKeyWords.UNSUBSCRIBE) +
+                "\">";
 
         pageContext.getOut().print(buffer);
 

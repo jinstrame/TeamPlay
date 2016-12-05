@@ -33,7 +33,15 @@
         <tag-class>servlets.tags.team.TeamControlls</tag-class>
         <body-content>scriptless</body-content>
     </tag>
-
-    <!-- Invoke 'Generate' action to add tags or functions -->
+    <tag>
+        <name>teammates</name>
+        <tag-class>servlets.tags.team.Teammates</tag-class>
+        <body-content>empty</body-content>
+    </tag>
+    <tag>
+        <name>playersList</name>
+        <tag-class>servlets.tags.team.PlayersList</tag-class>
+        <body-content>empty</body-content>
+    </tag>
 
 </taglib>

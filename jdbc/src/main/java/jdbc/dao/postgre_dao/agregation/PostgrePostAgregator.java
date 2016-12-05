@@ -10,12 +10,8 @@ import java.util.PriorityQueue;
 
 public class PostgrePostAgregator implements Agregator<Post>{
 
-    // TODO: 22.10.2016 test agregation
-
     private static final int DEFAULT_PORION_SIZE = 10;
     private PriorityQueue<PostAggrQueue> sources;
-    private ConnectionPool pool;
-    private int nextIndex = 0;
     private int outOfSourceSize;
     private int readed;
     private int index;
@@ -67,13 +63,6 @@ public class PostgrePostAgregator implements Agregator<Post>{
         return ret;
     }
 
-    @Override
-    public int size() {
-        int inSource = 0;
-        for (PostAggrQueue queue : sources)
-            inSource += queue.size();
-        return inSource + outOfSourceSize;
-    }
 
     @Override
     public int readed() {

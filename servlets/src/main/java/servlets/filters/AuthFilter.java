@@ -7,9 +7,13 @@ import jdbc.dao.core.AccountDao;
 import langSupport.LocaleKeyWords;
 import lombok.extern.log4j.Log4j2;
 import security.Hash;
+import servlets.listeners.DefaultSessionParams;
 import servlets.listeners.Initer;
 
-import javax.servlet.*;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
@@ -20,11 +24,15 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
 
+/**
+ * Provides basic authentication using login and password.
+ */
+
 @Log4j2
 @WebFilter("/*")
 public class AuthFilter extends HttpFilter {
 
-    public static final String AUTH = "auth";
+    public static final String AUTH = DefaultSessionParams.AUTH;
 
     private AccountDao accountDao;
 
@@ -39,7 +47,7 @@ public class AuthFilter extends HttpFilter {
     protected void doFilter(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
         HttpSession session = request.getSession(true);
 
-        log.error(session.getId());
+        request.setCharacterEncoding("UTF-8");
 
         if (session.getAttribute(AUTH) != null) {
             chain.doFilter(request, response);
@@ -50,33 +58,22 @@ public class AuthFilter extends HttpFilter {
         if (parameterMap.containsKey("password") && parameterMap.containsKey("email")) {
             session.setAttribute("locale", new LocaleKeyWords(Locale.getDefault()));
 
-            log.error("condition 1");
 
             Optional<Page> authorize = authorize(parameterMap);
             if (authorize.isPresent()) {
-                log.error("condition 2");
 
                 Page auth = authorize.get();
 
-                session.setAttribute("locale", new LocaleKeyWords(new Locale(auth.getLanguage())));
                 session.setAttribute(AUTH, auth);
+                session.setAttribute(DefaultSessionParams.LOCALE, new LocaleKeyWords(new Locale(auth.getLanguage())));
+                session.setAttribute(DefaultSessionParams.TIMEZONE, auth.getTimeZone());
 
-                String append = "";
-                if (request.getParameter("id") != null) {
-                    append = "?id=" + request.getParameter("id");
-                }
-
-                log.error(request.getMethod());
-                log.error(request.getRequestURI() + append);
-
-                response.sendRedirect("page" + append);
+                response.sendRedirect("/page");
             } else {
-                log.error("condition 2.5");
                 request.getRequestDispatcher("/error.html").forward(request, response);
             }
 
         } else {
-            log.error(request.getRequestURI());
             if (request.getRequestURI().startsWith("/auth")
                     ||request.getRequestURI().startsWith("/styles")) {
                 chain.doFilter(request, response);
@@ -95,6 +92,8 @@ public class AuthFilter extends HttpFilter {
 
         return accountDao.isAutorized(login, hash);
     }
+
+
 
 
 }

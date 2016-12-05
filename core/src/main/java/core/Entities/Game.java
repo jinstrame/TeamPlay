@@ -1,12 +1,11 @@
 package core.Entities;
 
 
-import lombok.*;
+import lombok.Builder;
+import lombok.Getter;
 
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 @Getter
-@ToString
 public class Game {
     private int page;
     private String game;

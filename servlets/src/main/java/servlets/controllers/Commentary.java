@@ -8,7 +8,6 @@ import jdbc.dao.core.CommentDao;
 import jdbc.dao.core.PostDao;
 import lombok.extern.log4j.Log4j2;
 import lombok.val;
-import servlets.filters.AuthFilter;
 import servlets.listeners.Initer;
 
 import javax.servlet.RequestDispatcher;
@@ -21,6 +20,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.Instant;
+
+import static servlets.listeners.DefaultSessionParams.*;
 
 @Log4j2
 @WebServlet("/post")
@@ -35,8 +36,8 @@ public class Commentary extends HttpServlet {
 
         Post post = postDao.get(id, page);
 
-        req.getSession().setAttribute("post", post);
-        req.getSession().setAttribute("comments", commentDao.agregator(post).getNext(15));
+        req.getSession().setAttribute(POST, post);
+        req.getSession().setAttribute(COMMENTS, commentDao.agregator(post).getNext(0));
 
         RequestDispatcher requestDispatcher = req.getRequestDispatcher("jsppages/comments.jsp");
         requestDispatcher.forward(req,resp);
@@ -45,17 +46,23 @@ public class Commentary extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String content = req.getParameter("content");
-        Post post = (Post)req.getSession().getAttribute("post");
-        Page page = (Page)req.getSession().getAttribute(AuthFilter.AUTH);
+        int postId = Integer.parseInt(req.getParameter("id"));
+        int pageId = Integer.parseInt(req.getParameter("page"));
+        Page commentator = (Page)req.getSession().getAttribute(AUTH);
         val builder = Comment.builder();
 
-        builder.content(content);
-        builder.time(Instant.now());
-        builder.commentator_id(page.getId());
-        builder.pageId(post.getPageId());
-        builder.postId(post.getId());
+        builder.content(content)
+                .time(Instant.now())
+                .commentator_id(commentator.getId())
+                .pageId(pageId)
+                .postId(postId);
 
         commentDao.put(builder.build());
+
+        resp.sendRedirect("/post?id=" +
+                postId +
+                "&page=" +
+                pageId);
     }
 
     @Override

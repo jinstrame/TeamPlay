@@ -21,6 +21,8 @@
         <body-content>empty</body-content>
     </tag>
 
+
+
     <tag>
         <name>feed</name>
         <tag-class>servlets.tags.Feed</tag-class>
@@ -41,6 +43,40 @@
         <name>placeContent</name>
         <tag-class>servlets.tags.PlaceContent</tag-class>
         <body-content>scriptless</body-content>
+    </tag>
+
+    <tag>
+        <name>avatar</name>
+        <tag-class>servlets.tags.page.Avatar</tag-class>
+        <body-content>empty</body-content>
+    </tag>
+    <tag>
+        <name>me</name>
+        <tag-class>servlets.tags.IfMe</tag-class>
+        <body-content>scriptless</body-content>
+    </tag>
+    <tag>
+        <name>pageAbout</name>
+        <tag-class>servlets.tags.PageAbout</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>authPage</name>
+            <type>boolean</type>
+        </attribute>
+        <attribute>
+            <name>addNls</name>
+            <type>boolean</type>
+        </attribute>
+    </tag>
+    <tag>
+        <name>searchResults</name>
+        <tag-class>servlets.tags.SearchResults</tag-class>
+        <body-content>empty</body-content>
+    </tag>
+    <tag>
+        <name>searchInput</name>
+        <tag-class>servlets.tags.SearchInput</tag-class>
+        <body-content>empty</body-content>
     </tag>
 
 

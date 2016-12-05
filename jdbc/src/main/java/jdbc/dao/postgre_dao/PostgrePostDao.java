@@ -42,7 +42,7 @@ class PostgrePostDao implements PostDao {
                             "WHERE id = " + pageId );
             set.next();
             builder.firstName(set.getString("first_name"))
-                    .secondName(set.getString("second_name"))
+                    .lastName(set.getString("second_name"))
                     .nickname(set.getString("nickname"));
 
             return builder.build();

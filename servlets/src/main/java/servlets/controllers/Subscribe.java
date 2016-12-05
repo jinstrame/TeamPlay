@@ -5,7 +5,7 @@ import core.Entities.Page;
 import jdbc.DaoProvider;
 import jdbc.dao.core.PageDao;
 import lombok.extern.log4j.Log4j2;
-import servlets.filters.AuthFilter;
+import servlets.listeners.DefaultSessionParams;
 import servlets.listeners.Initer;
 
 import javax.servlet.ServletConfig;
@@ -25,7 +25,7 @@ public class Subscribe extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int sub_to = Integer.parseInt(req.getParameter("source"));
-        Page userPage = (Page)req.getSession().getAttribute(AuthFilter.AUTH);
+        Page userPage = (Page)req.getSession().getAttribute(DefaultSessionParams.AUTH);
         pageDao.subscribe(userPage, sub_to);
 
         resp.sendRedirect("/page?id=" + sub_to);

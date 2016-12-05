@@ -4,8 +4,10 @@ import core.Entities.Game;
 import core.Entities.Page;
 import core.Entities.TeamRole;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import java.util.TimeZone;
 
 public interface PageDao {
 
@@ -38,4 +40,8 @@ public interface PageDao {
     void removeFromTeam(Page team, int to_remove);
 
     void updateAvatar(Page page, String avaId);
+
+    void updateName(Page page, String firstName, String lastName, String nickName, String about);
+
+    void updateContext(Page page, LocalDate date, String lang, TimeZone tz);
 }

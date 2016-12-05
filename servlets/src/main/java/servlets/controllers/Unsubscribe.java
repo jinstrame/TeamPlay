@@ -5,7 +5,6 @@ import core.Entities.Page;
 import jdbc.DaoProvider;
 import jdbc.dao.core.PageDao;
 import lombok.extern.log4j.Log4j2;
-import servlets.filters.AuthFilter;
 import servlets.listeners.Initer;
 
 import javax.servlet.ServletConfig;
@@ -17,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+import static servlets.listeners.DefaultSessionParams.AUTH;
+
 @Log4j2
 @WebServlet("/unsubscribe")
 public class Unsubscribe extends HttpServlet {
@@ -25,7 +26,7 @@ public class Unsubscribe extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int sub_to = Integer.parseInt(req.getParameter("source"));
-        Page userPage = (Page)req.getSession().getAttribute(AuthFilter.AUTH);
+        Page userPage = (Page)req.getSession().getAttribute(AUTH);
         pageDao.unSubscribe(userPage, sub_to);
 
         resp.sendRedirect("/page?id=" + sub_to);

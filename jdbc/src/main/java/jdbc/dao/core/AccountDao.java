@@ -5,6 +5,8 @@ import core.Entities.Page;
 
 import java.util.Optional;
 
+
+
 public interface AccountDao {
     Optional<Page> isAutorized(String login, String h_password);
 

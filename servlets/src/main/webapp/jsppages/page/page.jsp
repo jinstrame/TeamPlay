@@ -17,10 +17,10 @@
 <body>
 <header>
     <div class="header_block">
-        <form class="search_form" >
-            <input type="search" placeholder="Поиск">
+        <form class="search_form" method="get" action="/search">
+            <common:searchInput/>
         </form>
-        <a href="http://google.com" class="hvr-fade-back header_link"><common:localeTag key="settings"/></a>
+        <a href="/settings" class="hvr-fade-back header_link"><common:localeTag key="settings"/></a>
         <a href="/logout" class="hvr-fade-back header_link"><common:localeTag key="quit"/></a>
     </div>
 </header>
@@ -29,40 +29,47 @@
         <page:personControlls>
             <a href="/page" class="hvr-fade menu_link"><common:localeTag key="profile"/></a>
             <a href="/feed" class="hvr-fade menu_link"><common:localeTag key="feed"/></a>
-            <a href="http://google.com" class="hvr-fade menu_link"><common:localeTag key="subscriptions"/></a>
+            <a href="/subscribtions" class="hvr-fade menu_link"><common:localeTag key="subscriptions"/></a>
         </page:personControlls>
         <team:teamControlls>
             <a href="/page" class="hvr-fade menu_link"><common:localeTag key="profile"/></a>
-            <a href="http://google.com" class="hvr-fade menu_link"><common:localeTag key="team"/></a>
+            <a href="/teammates" class="hvr-fade menu_link"><common:localeTag key="team"/></a>
         </team:teamControlls>
     </div>
     <div class="main_block">
         <div id="content_block" class="content_block">
             <div class="info_text_block">
+                <team:teamInfo/>
+                <team:players/>
                 <page:pageInfo/>
                 <page:teams/>
+                <div class="about_block">
+                    <common:pageAbout authPage="false" addNls="true"/>
+                </div>
             </div>
-            <common:placeContent>
+            <common:me>
                 <div class="post_block">
 <%--suppress HtmlFormInputWithoutLabel --%>
-                    <textarea class="content" form="postform" rows="10" name="content">Какой-то контент</textarea>
+                    <textarea class="content" form="postform" rows="10" name="content"><common:localeTag key="place_content"/></textarea>
                     <form id="postform" name="postform" method="post" accept-charset="UTF-8" >
                         <input class="hvr-fade send_button" type="submit">
                     </form>
                 </div>
-            </common:placeContent>
+            </common:me>
             <common:posts/>
         </div>
         <div class="right_block">
             <div class="info_image_block">
 <%--suppress HtmlUnknownTarget --%>
-                <page:avatar/>
+                <common:avatar/>
             </div>
             <div>
-                <form action="/avaupload" id="imgform" name="imgform" method="post" enctype="multipart/form-data" >
-                    <input type="file" name="image" id="fileupload">
-                    <input class="hvr-fade send_button" type="submit">
-                </form>
+                <common:me>
+                    <form action="/avaupload" id="imgform" name="imgform" method="post" enctype="multipart/form-data" >
+                        <input type="file" name="image" id="fileupload">
+                        <input class="hvr-fade send_button" type="submit">
+                    </form>
+                </common:me>
                 <page:subscribeButton/>
                 <team:teamButton/>
             </div>

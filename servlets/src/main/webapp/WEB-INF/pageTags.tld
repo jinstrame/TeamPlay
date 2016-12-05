@@ -33,14 +33,15 @@
         <body-content>scriptless</body-content>
     </tag>
     <tag>
-        <name>avatar</name>
-        <tag-class>servlets.tags.page.Avatar</tag-class>
+        <name>subList</name>
+        <tag-class>servlets.tags.page.SubList</tag-class>
         <body-content>empty</body-content>
     </tag>
-
-
-    <!-- Invoke 'Generate' action to add tags or functions -->
-
+    <tag>
+        <name>teamsList</name>
+        <tag-class>servlets.tags.page.TeamsList</tag-class>
+        <body-content>empty</body-content>
+    </tag>
 
 
 </taglib>

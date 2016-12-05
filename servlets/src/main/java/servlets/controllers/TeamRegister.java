@@ -20,6 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.TimeZone;
 
 @Log4j2
 @WebServlet("/auth/team_register")
@@ -40,19 +41,17 @@ public class TeamRegister extends HttpServlet {
         val pageBuilder = Page.builder();
 
 
-            pageBuilder.firstName(req.getParameter("firstname"));
-            pageBuilder.secondName(req.getParameter("lastname"));
-            pageBuilder.language("ru");
-            pageBuilder.dob(LocalDate.now());
-            pageBuilder.pageType(PageTypes.TEAM);
-            Page p = pageBuilder.build();
+        pageBuilder.firstName(req.getParameter("firstname"))
+                .lastName(req.getParameter("lastname"))
+                .language(req.getParameter("language"))
+                .timeZone(TimeZone.getTimeZone(req.getParameter("timezone")))
+                .dob(LocalDate.now())
+                .pageType(PageTypes.TEAM);
 
+        Page p = pageBuilder.build();
 
-            Account account = accountDao.register(p, req.getParameter("reg_email"), req.getParameter("reg_password"));
-            resp.sendRedirect("/page?id=" + account.getPageId());
-
-
-
+        Account account = accountDao.register(p, req.getParameter("reg_email"), req.getParameter("reg_password"));
+        resp.sendRedirect("/page?id=" + account.getPageId());
     }
 
     @Override

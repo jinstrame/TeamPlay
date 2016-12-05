@@ -1,7 +1,6 @@
 package servlets.controllers;
 
 import core.Entities.Page;
-import core.Entities.PageTypes;
 import core.Entities.Post;
 import jdbc.DaoProvider;
 import jdbc.dao.core.PageDao;
@@ -9,7 +8,6 @@ import jdbc.dao.core.PostDao;
 import jdbc.dao.core.agregation.Agregator;
 import lombok.extern.log4j.Log4j2;
 import lombok.val;
-import servlets.filters.AuthFilter;
 import servlets.listeners.Initer;
 
 import javax.servlet.RequestDispatcher;
@@ -25,6 +23,8 @@ import java.time.Instant;
 import java.util.LinkedList;
 import java.util.List;
 
+import static servlets.listeners.DefaultSessionParams.*;
+
 @Log4j2
 @WebServlet("/page")
 public class PageController extends HttpServlet {
@@ -37,7 +37,7 @@ public class PageController extends HttpServlet {
         Page page;
         String s = req.getParameter("id");
         if (s == null){
-            page = (Page)req.getSession().getAttribute(AuthFilter.AUTH);
+            page = (Page)req.getSession().getAttribute(AUTH);
         } else{
             int a = Integer.parseInt(s);
             //noinspection OptionalGetWithoutIsPresent
@@ -48,26 +48,22 @@ public class PageController extends HttpServlet {
         source.add(page.getId());
         Agregator<Post> agregator = postDao.agregator(source);
         List<Post> initPosts = agregator.getNext(10);
-        req.getSession().setAttribute("agregator", agregator);
-        req.getSession().setAttribute("agregator_sources", source);
-        req.getSession().setAttribute("posts", initPosts);
-        req.getSession().setAttribute("page", page);
+        req.getSession().setAttribute(AGREGATOR, agregator);
+        req.getSession().setAttribute(AGREGATOR_SOURCES, source);
+        req.getSession().setAttribute(POSTS, initPosts);
+        req.getSession().setAttribute(PAGE, page);
 
-        if (page.getPageType() == PageTypes.PERSON) {
-            RequestDispatcher requestDispatcher = req.getRequestDispatcher("jsppages/page/person.jsp");
-            requestDispatcher.forward(req, resp);
-        }
-        else{
-            RequestDispatcher requestDispatcher = req.getRequestDispatcher("jsppages/page/team.jsp");
-            requestDispatcher.forward(req, resp);
-        }
+
+        RequestDispatcher requestDispatcher = req.getRequestDispatcher("jsppages/page/page.jsp");
+        requestDispatcher.forward(req, resp);
+
     }
 
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         val postBuilder = Post.builder();
-        val page = (Page)req.getSession().getAttribute(AuthFilter.AUTH);
+        val page = (Page)req.getSession().getAttribute(AUTH);
 
-        postBuilder.firstName(page.getFirstName()).secondName(page.getSecondName()).nickname(page.getNickname());
+        postBuilder.firstName(page.getFirstName()).lastName(page.getLastName()).nickname(page.getNickname());
         postBuilder.pageId(page.getId());
         postBuilder.id(page.getLastPostId() + 1);
         postBuilder.time(Instant.now());

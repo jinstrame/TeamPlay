@@ -10,8 +10,11 @@ import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import lombok.val;
 
-import java.sql.*;
-import java.sql.Date;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.time.LocalDate;
 import java.util.*;
 
 
@@ -37,7 +40,7 @@ public class PostgrePageDao implements PageDao {
 
 
             ResultSet set = statement.executeQuery(
-                    "SELECT id, type, nickname, first_name, second_name, dob, language, main_post_id, last_post_id" +
+                    "SELECT id, type, nickname, first_name, second_name, dob, language, last_post_id, about, timezone" +
                             " FROM web_app.pages WHERE id = " + Integer.toString(id));
             set.next();
             type = PageTypes.valueOf(set.getString("type"));
@@ -48,11 +51,12 @@ public class PostgrePageDao implements PageDao {
             builder.pageType(type);
             builder.nickname(nickName);
             builder.firstName(firstName);
-            builder.secondName(lastName);
+            builder.lastName(lastName);
             builder.dob(set.getDate("dob").toLocalDate());
             builder.language(set.getString("language"));
-            builder.mainPostId(set.getInt("main_post_id"));
             builder.lastPostId(set.getInt("last_post_id"));
+            builder.about(set.getString("about"));
+            builder.timeZone(TimeZone.getTimeZone(set.getString("timezone")));
 
             if (type == PageTypes.PERSON) {
                 set = statement.executeQuery(
@@ -78,11 +82,6 @@ public class PostgrePageDao implements PageDao {
                 }
                 builder.subscribeList(sub);
 
-                set = statement.executeQuery(
-                        "SELECT ava_id FROM web_app.page_avatars WHERE page_id = " + Integer.toString(id));
-                if (set.next())
-                    builder.avaId(set.getString("ava_id"));
-
             }else {
                 set = statement.executeQuery(
                         "SELECT participant_id " +
@@ -94,10 +93,15 @@ public class PostgrePageDao implements PageDao {
                 builder.subscribeList(sub);
             }
 
+            set = statement.executeQuery(
+                    "SELECT ava_id FROM web_app.page_avatars WHERE page_id = " + Integer.toString(id));
+            if (set.next())
+                builder.avaId(set.getString("ava_id"));
+
             return Optional.of(builder.build());
         }
         catch (Exception e){
-           log.error("failed to get page from database. " + e.getMessage());
+           log.error("failed to delete page from database. " + e.getMessage());
         }
 
         return Optional.empty();
@@ -119,31 +123,89 @@ public class PostgrePageDao implements PageDao {
     }
 
     @Override
-    public List<Page> search(String nick) {
-        return null;
-        /// TODO: 22.10.2016 create and test search methods
+    public List<Page> search(String word) {
+        try (Connection connection = pool.get();
+             Statement statement = connection.createStatement()){
+            ResultSet set = statement.executeQuery(
+                    "SELECT id, type, nickname, first_name, second_name " +
+                            "FROM web_app.pages WHERE " +
+                            "nickname='" + word + "' OR " +
+                            "first_name='" + word + "' OR " +
+                            "second_name='" + word + "'"
+            );
+
+            LinkedList<Page> ret = new LinkedList<>();
+            val builder = Page.builder();
+            while (set.next()){
+                builder.id(set.getInt("id"))
+                        .pageType(PageTypes.valueOf(set.getString("type")))
+                        .nickname(set.getString("nickname"))
+                        .firstName(set.getString("first_name"))
+                        .lastName(set.getString("second_name"));
+                ret.add(builder.build());
+            }
+
+            return ret;
+
+        } catch (SQLException e) {
+            log.error(e.toString());
+            e.printStackTrace();
+        }
+
+        return new LinkedList<>();
     }
 
     @Override
-    public List<Page> search(String firstName, String secondName) {
-        return null;
+    public List<Page> search(String word1, String word2) {
+
+        try (Connection connection = pool.get();
+             Statement statement = connection.createStatement()){
+            ResultSet set = statement.executeQuery(
+                    "SELECT id, type, nickname, first_name, second_name " +
+                            "FROM web_app.pages WHERE (" +
+                            "first_name='" + word1 + "' AND second_name='" + word2 + "') OR (" +
+                            "first_name='" + word2 + "' AND second_name='" + word1 + "')"
+            );
+
+            LinkedList<Page> ret = new LinkedList<>();
+            val builder = Page.builder();
+            while (set.next()){
+                builder.id(set.getInt("id"))
+                        .pageType(PageTypes.valueOf(set.getString("type")))
+                        .nickname(set.getString("nickname"))
+                        .firstName(set.getString("first_name"))
+                        .lastName(set.getString("second_name"));
+                ret.add(builder.build());
+            }
+
+            return ret;
+
+        } catch (SQLException e) {
+            log.error(e.toString());
+            e.printStackTrace();
+        }
+
+        return new LinkedList<>();
     }
 
     @Override
     public boolean put (Page page) {
         try (Connection connection = pool.get();
              Statement statement = connection.createStatement()){
+
+
             statement.execute(
                     "INSERT INTO web_app.pages VALUES (" +
                             page.getId() + ", " +
                             "'" + page.getPageType().name() + "', " +
                             "'" + page.getNickname() + "', " +
                             "'" + page.getFirstName() + "', " +
-                            "'" + page.getSecondName() + "', " +
-                            "'" + Date.valueOf(page.getDob()).toString() + "', " +
+                            "'" + page.getLastName() + "', " +
+                            "'" + java.sql.Date.valueOf(page.getDob()).toString() + "', " +
+                            "'" + page.getTimeZone().getID() + "', " +
                             "'" + page.getLanguage() + "', " +
                             0 + ", " +
-                            0 +
+                            "''" +
                             ")");
             return true;
         } catch (SQLException e) {
@@ -257,12 +319,12 @@ public class PostgrePageDao implements PageDao {
             ResultSet set = statement.executeQuery(
                     "SELECT first_name, second_name, organisation_id, participation_type  FROM web_app.org_participants " +
                             "JOIN web_app.pages " +
-                            "ON web_app.org_participants.participant_id = web_app.pages.id " +
+                            "ON web_app.org_participants.organisation_id = web_app.pages.id " +
                             "WHERE participant_id = " + page.getId());
 
             val teamRoleBuilder = TeamRole.builder();
             teamRoleBuilder.firstName(page.getFirstName())
-                    .lastName(page.getSecondName()).nickName(page.getNickname())
+                    .lastName(page.getLastName()).nickName(page.getNickname())
                     .player(page.getId());
             while (set.next()) {
                 teamRoleBuilder.teamName(set.getString("first_name"));
@@ -296,12 +358,12 @@ public class PostgrePageDao implements PageDao {
             ResultSet set = statement.executeQuery(
                     "SELECT first_name, second_name, nickname, participant_id, participation_type  FROM web_app.org_participants " +
                             "JOIN web_app.pages " +
-                            "ON web_app.org_participants.organisation_id = web_app.pages.id " +
+                            "ON web_app.org_participants.participant_id = web_app.pages.id " +
                             "WHERE organisation_id = " + page.getId());
 
             val teamRoleBuilder = TeamRole.builder();
             teamRoleBuilder.firstName(page.getFirstName())
-                    .lastName(page.getSecondName()).team(page.getId());
+                    .lastName(page.getLastName()).team(page.getId());
             while (set.next()) {
                 teamRoleBuilder.firstName(set.getString("first_name"));
                 teamRoleBuilder.lastName(set.getString("second_name"));
@@ -337,5 +399,76 @@ public class PostgrePageDao implements PageDao {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void updateName(Page page, String firstName, String lastName, String nickName, String about){
+        String separator = "";
+        StringBuilder sb = new StringBuilder("UPDATE web_app.pages SET ");
+        if (firstName != null){
+            sb.append(separator).append("first_name='").append(firstName).append("'");
+            page.setFirstName(firstName);
+            separator = ", ";
+        }
+
+        if (lastName != null) {
+            sb.append(separator).append("second_name='").append(lastName).append("'");
+            page.setLastName(lastName);
+            separator = ", ";
+        }
+
+        if (about != null) {
+            sb.append(separator).append("about='").append(about).append("'");
+            page.setAbout(about);
+            separator = ", ";
+        }
+        if (nickName != null) {
+            sb.append(separator).append("nickname='").append(nickName).append("'");
+            page.setNickname(nickName);
+        }
+
+        sb.append(" WHERE id=").append(page.getId());
+
+        try (Connection connection = pool.get();
+             Statement statement = connection.createStatement()) {
+            statement.execute(sb.toString());
+        } catch (SQLException e) {
+            log.error(e.toString());
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void updateContext(Page page, LocalDate date, String lang, TimeZone tz){
+        String separator = "";
+        StringBuilder sb = new StringBuilder("UPDATE web_app.pages SET ");
+        if (date != null){
+            sb.append(separator).append("dob='")
+                    .append(java.sql.Date.valueOf(date).toString()).append("'");
+            separator = ", ";
+            page.setDob(date);
+        }
+
+        if (lang != null) {
+            sb.append(separator).append("language='").append(lang).append("'");
+            separator = ", ";
+            page.setLanguage(lang);
+        }
+        if (tz != null) {
+            sb.append(separator).append("timezone='").append(tz.getID()).append("'");
+            page.setTimeZone(tz);
+        }
+
+        sb.append(" WHERE id=").append(page.getId());
+
+        try (Connection connection = pool.get();
+             Statement statement = connection.createStatement()) {
+            statement.execute(sb.toString());
+        } catch (SQLException e) {
+            log.error(e.toString());
+            e.printStackTrace();
+        }
+
+
     }
 }

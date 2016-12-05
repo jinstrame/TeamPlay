@@ -2,21 +2,25 @@ package servlets.tags.team;
 
 import core.Entities.Page;
 import core.Entities.PageTypes;
+import langSupport.LocaleKeyWords;
 import lombok.SneakyThrows;
-import servlets.filters.AuthFilter;
 
 import javax.servlet.jsp.JspException;
 import javax.servlet.jsp.tagext.TagSupport;
+
+import static servlets.listeners.DefaultSessionParams.*;
 
 public class TeamButton extends TagSupport {
 
     private Page myPage;
     private Page page;
+    private LocaleKeyWords lkw;
 
     @Override
     public int doStartTag() throws JspException{
-        myPage = (Page)pageContext.getSession().getAttribute(AuthFilter.AUTH);
-        page = (Page)pageContext.getSession().getAttribute("page");
+        myPage = (Page)pageContext.getSession().getAttribute(AUTH);
+        page = (Page)pageContext.getSession().getAttribute(PAGE);
+        lkw = (LocaleKeyWords) pageContext.getSession().getAttribute(LOCALE);
 
         if (myPage.getPageType() == PageTypes.PERSON)
             return noButton();
@@ -39,8 +43,12 @@ public class TeamButton extends TagSupport {
 
         String s = "<form action=\"addplayer?player=" + page.getId() +
                 "\" method=\"post\">" +
-                "<input placeholder=\"Роль\" type=\"text\" name=\"role\">  <br>" +
-                "<input class=\"hvr-fade-back header_link\" type=\"submit\" value=\"" + "Добавить в команду" + "\"/>";
+                "<input placeholder=\"" +
+                lkw.get(LocaleKeyWords.ROLE) +
+                "\" type=\"text\" name=\"role\">  <br>" +
+                "<input class=\"hvr-fade-back header_link\" type=\"submit\" value=\"" +
+                lkw.get(LocaleKeyWords.ADD_TO_TEAM) +
+                "\"/>";
 
         pageContext.getOut().print(s);
 
