@@ -47,7 +47,7 @@ public class TeamButton extends TagSupport {
                 lkw.get(LocaleKeyWords.ROLE) +
                 "\" type=\"text\" name=\"role\">  <br>" +
                 "<input class=\"hvr-fade-back header_link\" type=\"submit\" value=\"" +
-                lkw.get(LocaleKeyWords.ADD_TO_TEAM) +
+                lkw.get(LocaleKeyWords.ADD_DO_TEAM) +
                 "\"/>";
 
         pageContext.getOut().print(s);
@@ -61,7 +61,9 @@ public class TeamButton extends TagSupport {
             return addToTeamButton();
 
         String buffer = "<form action=\"removefromteam?player=" + page.getId() +
-                "\" method=\"post\"><input class=\"hvr-fade-back header_link\" type=\"submit\" value=\"" + "Исключить из команды" + "\"/>";
+                "\" method=\"post\"><input class=\"hvr-fade-back header_link\" type=\"submit\" value=\"" +
+                lkw.get(LocaleKeyWords.REMOVE_FROM_TEAM) +
+                "\"/>";
 
         pageContext.getOut().print(buffer);
 

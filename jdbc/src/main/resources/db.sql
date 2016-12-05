@@ -2,8 +2,6 @@ Drop user tomcat;
 
 CREATE USER tomcat with ENCRYPTED PASSWORD 'password';
 
-CREATE SCHEMA web_app;
-
 DROP SCHEMA web_app CASCADE;
 CREATE SCHEMA web_app;
 

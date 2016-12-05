@@ -41,13 +41,13 @@
                 <table>
                     <tr><td><common:localeTag key="team"/></td><td>
                         <form action="/settings?attr=upd_firstname" method="post"><input type="text" name="upd_firstname">
-                            <<button class="hvr-fade send_button" type="submit" >
+                            <button class="hvr-fade send_button" type="submit" >
                                 <common:localeTag key="send"/>
                             </button></form></td></tr>
 
                     <tr><td><common:localeTag key="game"/></td><td>
                         <form action="/settings?attr=upd_lastname" method="post"><input type="text" name="upd_lastname">
-                            <<button class="hvr-fade send_button" type="submit" >
+                            <button class="hvr-fade send_button" type="submit" >
                                 <common:localeTag key="send"/>
                             </button></form></td></tr>
 
@@ -57,11 +57,11 @@
                                 <option value="RU">
                                 <option value="EN">
                             </datalist>
-                            <<button class="hvr-fade send_button" type="submit" >
+                            <button class="hvr-fade send_button" type="submit" >
                                 <common:localeTag key="send"/>
                             </button></form></td></tr>
 
-                    <tr><td>Зона</td><td>
+                    <tr><td><common:localeTag key="time_zone"/> </td><td>
                         <form action="/settings?attr=upd_timezone" method="post"><input type="text" name="upd_timezone" list="tz_list" >
                             <datalist id="tz_list">
                                 <option value="GMT-11">
@@ -96,7 +96,7 @@
 
                 <textarea class="content" form="upd_about" rows="10" name="upd_about"><common:pageAbout authPage="true" addNls="false"/></textarea>
                 <form action="/settings?attr=upd_about" id="upd_about" name="upd_about" method="post">
-                    <<button class="hvr-fade send_button" type="submit" >
+                    <button class="hvr-fade send_button" type="submit" >
                         <common:localeTag key="send"/>
                     </button>
                 </form>

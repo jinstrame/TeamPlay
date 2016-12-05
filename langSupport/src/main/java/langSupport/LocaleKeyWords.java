@@ -42,7 +42,8 @@ public class LocaleKeyWords {
     public static final String PLAYERS = "players";
     public static final String NO_PLAYERS = "no_players";
     public static final String ROLE = "role";
-    public static final String ADD_TO_TEAM = "add_to_team";
+    public static final String ADD_DO_TEAM = "add_to_team";
+    public static final String REMOVE_FROM_TEAM = "rem_from_team";
     public static final String LOAD = "load";
     public static final String PLACE_CONTENT = "place_content";
     public static final String EMAIL = "email";
